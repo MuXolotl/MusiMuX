@@ -1,5 +1,9 @@
 name: Release
 
+# Секрет VKMUX_BOT_TOKEN намеренно сохраняет старое имя после переименования
+# репозиториев в MusiMuX: секрет на GitHub нельзя переименовать, только выпустить
+# новый токен. Не трогать и не «приводить к единообразию».
+
 on:
   workflow_dispatch:
     inputs:
@@ -34,7 +38,7 @@ jobs:
       - name: 📥 Checkout private source
         uses: actions/checkout@v4
         with:
-          repository: MuXolotl/VKMuX-dev
+          repository: MuXolotl/MusiMuX-dev
           token: ${{ secrets.VKMUX_BOT_TOKEN }}
           ref: main
 
@@ -117,8 +121,8 @@ jobs:
               unreleased = re.search(r"^\[Unreleased\]: .+$", text, flags=re.MULTILINE)
               if unreleased is None:
                   raise SystemExit("CHANGELOG.md: ссылка Unreleased не найдена")
-              source = "https://github.com/MuXolotl/VKMuX-dev"
-              releases = "https://github.com/MuXolotl/VKMuX"
+              source = "https://github.com/MuXolotl/MusiMuX-dev"
+              releases = "https://github.com/MuXolotl/MusiMuX"
               links = (
                   f"[Unreleased]: {source}/compare/v{version}...HEAD\n"
                   f"[{version}]: {releases}/releases/tag/v{version}"
@@ -153,7 +157,7 @@ jobs:
       - name: 📥 Checkout private source
         uses: actions/checkout@v4
         with:
-          repository: MuXolotl/VKMuX-dev
+          repository: MuXolotl/MusiMuX-dev
           token: ${{ secrets.VKMUX_BOT_TOKEN }}
           ref: main
 
@@ -293,8 +297,8 @@ jobs:
               *.exe.sig)        ext="exe.sig" ;;
               *)                ext="${base##*.}" ;;
             esac
-            cp "$f" "artifacts/VKMuX-${VERSION}-${PLATFORM}.${ext}"
-            echo "✅ VKMuX-${VERSION}-${PLATFORM}.${ext}"
+            cp "$f" "artifacts/MusiMuX-${VERSION}-${PLATFORM}.${ext}"
+            echo "✅ MusiMuX-${VERSION}-${PLATFORM}.${ext}"
           done
           ls -la artifacts/
 
@@ -331,17 +335,17 @@ jobs:
 
           **MusiMuX** — музыкальный десктоп-клиент. Работает полностью локально — без внешних серверов.
 
-          🌐 Сайт приложения: https://muxolotl.github.io/VKMuX
+          🌐 Сайт приложения: https://muxolotl.github.io/MusiMuX
 
           ## Скачать
 
           | Система | Файлы |
           |---|---|
-          | Windows x64 | [EXE](${BASE}/VKMuX-${VERSION}-windows-x64.exe) · [MSI](${BASE}/VKMuX-${VERSION}-windows-x64.msi) |
-          | macOS Apple Silicon | [DMG](${BASE}/VKMuX-${VERSION}-macos-arm64.dmg) |
-          | macOS Intel | [DMG](${BASE}/VKMuX-${VERSION}-macos-intel.dmg) |
-          | Linux x64 | [AppImage](${BASE}/VKMuX-${VERSION}-linux-x64.AppImage) · [DEB](${BASE}/VKMuX-${VERSION}-linux-x64.deb) |
-          | Linux ARM64 | [AppImage](${BASE}/VKMuX-${VERSION}-linux-arm64.AppImage) · [DEB](${BASE}/VKMuX-${VERSION}-linux-arm64.deb) |
+          | Windows x64 | [EXE](${BASE}/MusiMuX-${VERSION}-windows-x64.exe) · [MSI](${BASE}/MusiMuX-${VERSION}-windows-x64.msi) |
+          | macOS Apple Silicon | [DMG](${BASE}/MusiMuX-${VERSION}-macos-arm64.dmg) |
+          | macOS Intel | [DMG](${BASE}/MusiMuX-${VERSION}-macos-intel.dmg) |
+          | Linux x64 | [AppImage](${BASE}/MusiMuX-${VERSION}-linux-x64.AppImage) · [DEB](${BASE}/MusiMuX-${VERSION}-linux-x64.deb) |
+          | Linux ARM64 | [AppImage](${BASE}/MusiMuX-${VERSION}-linux-arm64.AppImage) · [DEB](${BASE}/MusiMuX-${VERSION}-linux-arm64.deb) |
 
           ## Что изменилось
 
@@ -356,7 +360,7 @@ jobs:
           AppImage нужно сделать исполняемым перед запуском:
 
           \`\`\`bash
-          chmod +x VKMuX-\${VERSION}-linux-x64.AppImage
+          chmod +x MusiMuX-\${VERSION}-linux-x64.AppImage
           \`\`\`
           EOF
 
@@ -387,7 +391,7 @@ jobs:
 
           gh release download "$TAG" -R "$REPO" --pattern "*.sig" -D sigs
           # Пустая строка, если артефакта нет (например, сборка платформы упала)
-          sig() { cat "sigs/VKMuX-${VERSION}-$1" 2>/dev/null || true; }
+          sig() { cat "sigs/MusiMuX-${VERSION}-$1" 2>/dev/null || true; }
 
           BODY=$(gh release view "$TAG" -R "$REPO" --json body -q .body)
           NOTES=$(printf '%s\n' "$BODY" | awk '
@@ -409,7 +413,7 @@ jobs:
             --arg notes    "$NOTES" \
             --arg pub_date "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --arg base     "$BASE" \
-            --arg v        "VKMuX-${VERSION}" \
+            --arg v        "MusiMuX-${VERSION}" \
             --arg sig_win        "$(sig windows-x64.exe.sig)" \
             --arg sig_mac_arm    "$(sig macos-arm64.app.tar.gz.sig)" \
             --arg sig_mac_intel  "$(sig macos-intel.app.tar.gz.sig)" \
@@ -452,14 +456,14 @@ jobs:
           {
             "version": "${VERSION}",
             "assets": {
-              "windows-installer":     "${BASE}/VKMuX-${VERSION}-windows-x64.msi",
-              "windows-exe":           "${BASE}/VKMuX-${VERSION}-windows-x64.exe",
-              "macos-arm64":           "${BASE}/VKMuX-${VERSION}-macos-arm64.dmg",
-              "macos-intel":           "${BASE}/VKMuX-${VERSION}-macos-intel.dmg",
-              "linux-deb":             "${BASE}/VKMuX-${VERSION}-linux-x64.deb",
-              "linux-appimage":        "${BASE}/VKMuX-${VERSION}-linux-x64.AppImage",
-              "linux-arm64-deb":       "${BASE}/VKMuX-${VERSION}-linux-arm64.deb",
-              "linux-arm64-appimage":  "${BASE}/VKMuX-${VERSION}-linux-arm64.AppImage"
+              "windows-installer":     "${BASE}/MusiMuX-${VERSION}-windows-x64.msi",
+              "windows-exe":           "${BASE}/MusiMuX-${VERSION}-windows-x64.exe",
+              "macos-arm64":           "${BASE}/MusiMuX-${VERSION}-macos-arm64.dmg",
+              "macos-intel":           "${BASE}/MusiMuX-${VERSION}-macos-intel.dmg",
+              "linux-deb":             "${BASE}/MusiMuX-${VERSION}-linux-x64.deb",
+              "linux-appimage":        "${BASE}/MusiMuX-${VERSION}-linux-x64.AppImage",
+              "linux-arm64-deb":       "${BASE}/MusiMuX-${VERSION}-linux-arm64.deb",
+              "linux-arm64-appimage":  "${BASE}/MusiMuX-${VERSION}-linux-arm64.AppImage"
             }
           }
           EOF

@@ -1,351 +1,354 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="icon" type="image/png" href="images/icon.png">
-    <link rel="apple-touch-icon" href="images/icon.png">
-
-    <title>MusiMuX — музыкальный десктоп-клиент</title>
-
-    <meta name="description" content="MusiMuX — музыкальный десктоп-клиент. Работает полностью локально, без внешних серверов. Rust + Tauri + Svelte.">
-    <meta name="keywords" content="MusiMuX, музыкальный плеер, десктоп клиент, desktop player, music player, Rust, Tauri, Svelte, MuXolotl">
-    <meta name="author" content="MuXolotl">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://muxolotl.github.io/VKMuX/">
-    <meta property="og:title" content="MusiMuX — музыкальный десктоп-клиент">
-    <meta property="og:description" content="Музыкальный десктоп-клиент. Работает полностью локально. Rust + Tauri.">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MusiMuX">
-    <meta name="twitter:description" content="Музыкальный десктоп-клиент. Локально, без серверов.">
-
-    <meta name="theme-color" content="#09090b">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "MusiMuX",
-      "operatingSystem": "Windows, macOS, Linux",
-      "applicationCategory": "MultimediaApplication",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Музыкальный десктоп-клиент. Работает полностью локально, без внешних серверов.",
-      "author": { "@type": "Person", "name": "MuXolotl" }
-    }
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MusiMuX — музыкальный клиент для Windows, macOS и Linux</title>
+  <meta name="description" content="MusiMuX — настольный музыкальный клиент: библиотека, подборки, поиск, тексты песен, скачивание. Работает локально, без своих серверов.">
+  <meta name="author" content="MuXolotl">
+  <meta name="theme-color" content="#09090b">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://muxolotl.github.io/MusiMuX/">
+  <meta property="og:title" content="MusiMuX — музыкальный клиент для Windows, macOS и Linux">
+  <meta property="og:description" content="MusiMuX — настольный музыкальный клиент: библиотека, подборки, поиск, тексты песен, скачивание. Работает локально, без своих серверов.">
+  <link rel="icon" type="image/png" href="images/icon.png">
+  <link rel="apple-touch-icon" href="images/icon.png">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-zinc-950 text-zinc-100 antialiased overflow-x-hidden">
-
-    <!-- ===== NAVBAR ===== -->
-    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06]" id="navbar">
-        <div class="mx-auto max-w-6xl px-6">
-            <div class="flex h-16 items-center justify-between">
-                <a href="index.html" class="flex items-center gap-2.5 group">
-                    <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/></svg>
-                    </div>
-                    <span class="text-sm font-semibold tracking-tight text-zinc-200 group-hover:text-white transition-colors">MusiMuX</span>
-                </a>
-
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="index.html" class="text-sm text-zinc-200 font-medium transition-colors">Главная</a>
-                    <a href="download.html" class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors">Скачать</a>
-                    <a href="about.html" class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors">О проекте</a>
-                </div>
-
-                <div class="flex items-center gap-3">
-                    <a href="https://github.com/MuXolotl/VKMuX" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-zinc-400 hover:text-zinc-200 hover:bg-white/5 transition-all" title="GitHub">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        <span class="hidden sm:inline">GitHub</span>
-                    </a>
-                    <a href="download.html" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-sm font-medium rounded-lg transition-colors">
-                        Скачать
-                    </a>
-
-                    <button id="mobileMenuBtn" class="md:hidden p-2 text-zinc-400 hover:text-white">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    </button>
-                </div>
-            </div>
-
-            <div id="mobileMenu" class="hidden md:hidden pb-4 pt-2 border-t border-white/[0.06]">
-                <div class="flex flex-col gap-3">
-                    <a href="index.html" class="text-sm text-zinc-200 font-medium transition-colors py-1">Главная</a>
-                    <a href="download.html" class="text-sm text-zinc-400 hover:text-white transition-colors py-1">Скачать</a>
-                    <a href="about.html" class="text-sm text-zinc-400 hover:text-white transition-colors py-1">О проекте</a>
-                </div>
-            </div>
-        </div>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-heart-filled" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+<symbol id="i-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+<symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+<symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+<symbol id="i-shuffle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></symbol>
+<symbol id="i-skip-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></symbol>
+<symbol id="i-skip-forward" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></symbol>
+<symbol id="i-repeat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></symbol>
+<symbol id="i-radio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></symbol>
+<symbol id="i-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></symbol>
+<symbol id="i-minimize" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+<symbol id="i-maximize" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="1"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+<symbol id="i-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
+<symbol id="i-keyboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+<symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
+<symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.17c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.58.23 2.75.12 3.04.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></symbol>
+<symbol id="i-windows" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></symbol>
+<symbol id="i-apple" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
+<symbol id="i-linux" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139z"/></symbol>
+</svg>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img class="brand-mark" src="images/icon.png" alt="" width="26" height="26">MusiMuX</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html" class="active">Главная</a>
+      <a href="download.html">Скачать</a>
+      <a href="about.html">О проекте</a>
     </nav>
-
-    <main>
-        <!-- ===== HERO ===== -->
-        <section class="relative min-h-[80vh] sm:min-h-[85vh] flex items-center justify-center pt-16 overflow-hidden">
-            <div class="absolute inset-0 pointer-events-none">
-                <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-blue-600/[0.07] rounded-full blur-[120px]"></div>
-                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent"></div>
-            </div>
-
-            <div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 64px 64px;"></div>
-
-            <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] mb-8">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-xs font-medium text-zinc-400">v<span class="version-tag">0.1.0</span></span>
-                </div>
-
-                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95] mb-6">
-                    <span class="block text-white">Твоя музыка</span>
-                    <span class="block bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 bg-clip-text text-transparent">на твоём ПК</span>
-                </h1>
-
-                <p class="text-base sm:text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
-                    Музыкальный десктоп-клиент.
-                    <span class="text-zinc-400">Авторизация</span>,
-                    <span class="text-zinc-400">библиотека</span>,
-                    <span class="text-zinc-400">поиск</span>,
-                    <span class="text-zinc-400">рекомендации</span>,
-                    <span class="text-zinc-400">тексты песен</span>.
-                    Работает полностью локально — без внешних серверов.
-                </p>
-
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="download.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-600/25 text-sm">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        Скачать бесплатно
-                    </a>
-                    <a href="https://github.com/MuXolotl/VKMuX" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 border border-white/[0.1] hover:border-white/[0.2] hover:bg-white/[0.03] text-zinc-300 font-medium rounded-xl transition-all text-sm">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        Исходный код
-                    </a>
-                </div>
-
-                <div class="flex items-center justify-center gap-4 sm:gap-6 mt-8 sm:mt-10 text-[11px] sm:text-xs text-zinc-600">
-                    <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
-                        Windows
-                    </span>
-                    <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                        macOS
-                    </span>
-                    <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139z"/></svg>
-                        Linux
-                    </span>
-                </div>
-            </div>
-
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-600">
-                <span class="text-[10px] uppercase tracking-widest">Узнать больше</span>
-                <div class="w-5 h-8 rounded-full border border-zinc-700 flex items-start justify-center p-1">
-                    <div class="w-1 h-1.5 rounded-full bg-zinc-500 animate-bounce"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== FEATURES ===== -->
-        <section id="features" class="site-section py-16 sm:py-24 px-4 sm:px-6 relative">
-            <div class="absolute inset-0 pointer-events-none">
-                <div class="absolute top-1/2 right-0 w-[400px] h-[400px] bg-blue-600/[0.04] rounded-full blur-[100px]"></div>
-            </div>
-
-            <div class="max-w-6xl mx-auto relative z-10">
-                <div class="text-center mb-16">
-                    <p class="text-xs font-semibold uppercase tracking-widest text-blue-400 mb-3">Возможности</p>
-                    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Всё, что нужно для музыки</h2>
-                    <p class="text-zinc-500 max-w-xl mx-auto">Полноценный клиент с авторизацией, библиотекой, поиском и текстами. Работает локально — никаких промежуточных серверов.</p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Auth -->
-                    <div class="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-blue-500/30 hover:bg-white/[0.04] transition-all duration-300">
-                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4">
-                            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-                        </div>
-                        <h3 class="text-sm font-semibold text-zinc-200 mb-2">Авторизация</h3>
-                        <p class="text-sm text-zinc-500 leading-relaxed">По логину/паролю (с 2FA и капчей) или по токену. Полная эмуляция Android-клиента.</p>
-                    </div>
-
-                    <!-- Library -->
-                    <div class="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-blue-500/30 hover:bg-white/[0.04] transition-all duration-300">
-                        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center mb-4">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                        </div>
-                        <h3 class="text-sm font-semibold text-zinc-200 mb-2">Библиотека и плейлисты</h3>
-                        <p class="text-sm text-zinc-500 leading-relaxed">Полная библиотека, плейлисты, поиск, рекомендации, популярное. Добавление и удаление треков.</p>
-                    </div>
-
-                    <!-- Lyrics -->
-                    <div class="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-blue-500/30 hover:bg-white/[0.04] transition-all duration-300">
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center mb-4">
-                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/></svg>
-                        </div>
-                        <h3 class="text-sm font-semibold text-zinc-200 mb-2">Тексты песен</h3>
-                        <p class="text-sm text-zinc-500 leading-relaxed">Караоке-режим для синхронизированных текстов. Статичный текст для остальных.</p>
-                    </div>
-
-                    <!-- Tray -->
-                    <div class="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-blue-500/30 hover:bg-white/[0.04] transition-all duration-300">
-                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-4">
-                            <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        </div>
-                        <h3 class="text-sm font-semibold text-zinc-200 mb-2">Системный трей</h3>
-                        <p class="text-sm text-zinc-500 leading-relaxed">Мини-плеер у трея, управление воспроизведением, настраиваемое поведение при закрытии.</p>
-                    </div>
-
-                    <!-- Shuffle/Repeat -->
-                    <div class="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-blue-500/30 hover:bg-white/[0.04] transition-all duration-300">
-                        <div class="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center mb-4">
-                            <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        </div>
-                        <h3 class="text-sm font-semibold text-zinc-200 mb-2">Плеер</h3>
-                        <p class="text-sm text-zinc-500 leading-relaxed">Перемешивание, повтор (все / один), горячие клавиши, упреждающая подгрузка.</p>
-                    </div>
-
-                    <!-- Local -->
-                    <div class="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-blue-500/30 hover:bg-white/[0.04] transition-all duration-300">
-                        <div class="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center mb-4">
-                            <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        </div>
-                        <h3 class="text-sm font-semibold text-zinc-200 mb-2">Полностью локально</h3>
-                        <p class="text-sm text-zinc-500 leading-relaxed">Никаких промежуточных серверов. Токены хранятся только на вашем ПК.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== TECH STACK ===== -->
-        <section class="site-section py-16 sm:py-24 px-4 sm:px-6 relative border-t border-white/[0.06]">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-16">
-                    <p class="text-xs font-semibold uppercase tracking-widest text-blue-400 mb-3">Технологии</p>
-                    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Под капотом</h2>
-                    <p class="text-zinc-500 max-w-xl mx-auto">Современный стек. Rust-ядро без внешних SDK. Tauri 2 для оболочки. Svelte 5 для UI.</p>
-                </div>
-
-                <div class="max-w-3xl mx-auto mb-12">
-                    <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
-                        <div class="text-xs text-zinc-600 uppercase tracking-wider mb-4 font-semibold">Архитектура</div>
-                        <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-0 justify-between text-center">
-                            <div class="flex-1 p-4 rounded-xl bg-blue-500/[0.06] border border-blue-500/15">
-                                <div class="text-sm font-bold text-blue-400 mb-1">mux-api</div>
-                                <div class="text-[11px] text-zinc-500 font-mono">Rust ядро</div>
-                                <div class="text-[10px] text-zinc-600">API · Auth · Protobuf</div>
-                            </div>
-                            <div class="hidden sm:block text-zinc-700 px-2">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                            </div>
-                            <div class="sm:hidden text-zinc-700">
-                                <svg class="w-6 h-6 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                            </div>
-                            <div class="flex-1 p-4 rounded-xl bg-green-500/[0.06] border border-green-500/15">
-                                <div class="text-sm font-bold text-green-400 mb-1">Tauri 2</div>
-                                <div class="text-[11px] text-zinc-500 font-mono">Desktop Shell</div>
-                                <div class="text-[10px] text-zinc-600">IPC · Tray · Mini-player</div>
-                            </div>
-                            <div class="hidden sm:block text-zinc-700 px-2">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                            </div>
-                            <div class="sm:hidden text-zinc-700">
-                                <svg class="w-6 h-6 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                            </div>
-                            <div class="flex-1 p-4 rounded-xl bg-orange-500/[0.06] border border-orange-500/15">
-                                <div class="text-sm font-bold text-orange-400 mb-1">Svelte 5</div>
-                                <div class="text-[11px] text-zinc-500 font-mono">Frontend UI</div>
-                                <div class="text-[10px] text-zinc-600">Runes · TypeScript · Vite</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
-                    <div class="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-center hover:border-white/[0.12] transition-colors">
-                        <div class="text-xl sm:text-2xl mb-1 sm:mb-2">🦀</div>
-                        <div class="text-xs font-semibold text-zinc-300">Rust</div>
-                        <div class="text-[10px] text-zinc-600">Ядро</div>
-                    </div>
-                    <div class="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-center hover:border-white/[0.12] transition-colors">
-                        <div class="text-xl sm:text-2xl mb-1 sm:mb-2">⚡</div>
-                        <div class="text-xs font-semibold text-zinc-300">Tauri 2</div>
-                        <div class="text-[10px] text-zinc-600">Framework</div>
-                    </div>
-                    <div class="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-center hover:border-white/[0.12] transition-colors">
-                        <div class="text-xl sm:text-2xl mb-1 sm:mb-2">🔥</div>
-                        <div class="text-xs font-semibold text-zinc-300">Svelte 5</div>
-                        <div class="text-[10px] text-zinc-600">UI</div>
-                    </div>
-                    <div class="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-center hover:border-white/[0.12] transition-colors">
-                        <div class="text-xl sm:text-2xl mb-1 sm:mb-2">📘</div>
-                        <div class="text-xs font-semibold text-zinc-300">TypeScript</div>
-                        <div class="text-[10px] text-zinc-600">Types</div>
-                    </div>
-                    <div class="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-center hover:border-white/[0.12] transition-colors">
-                        <div class="text-xl sm:text-2xl mb-1 sm:mb-2">🔗</div>
-                        <div class="text-xs font-semibold text-zinc-300">Protobuf</div>
-                        <div class="text-[10px] text-zinc-600">GCM Auth</div>
-                    </div>
-                    <div class="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-center hover:border-white/[0.12] transition-colors">
-                        <div class="text-xl sm:text-2xl mb-1 sm:mb-2">🎨</div>
-                        <div class="text-xs font-semibold text-zinc-300">Inter</div>
-                        <div class="text-[10px] text-zinc-600">Font</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== FEEDBACK ===== -->
-        <section class="site-section py-16 sm:py-24 px-4 sm:px-6 border-t border-white/[0.06]">
-            <div class="max-w-3xl mx-auto text-center">
-                <div class="mx-auto mb-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center">
-                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/></svg>
-                </div>
-                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Обратная связь</h2>
-                <p class="text-zinc-500 max-w-lg mx-auto mb-8">Баги, идеи и вопросы — в Issues проекта на GitHub.</p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="https://github.com/MuXolotl/VKMuX" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-white/[0.05] border border-white/[0.1] hover:border-white/[0.2] rounded-xl text-sm font-medium text-zinc-300 hover:text-white transition-all">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        Проект на GitHub
-                    </a>
-                    <a href="https://github.com/MuXolotl/VKMuX/issues/new" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
-                        Сообщить о баге →
-                    </a>
-                </div>
-                <div class="mt-8 text-xs text-zinc-600">
-                    Лицензия: MIT
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="border-t border-white/[0.06] py-6 sm:py-8 px-4 sm:px-6">
-        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-2 text-sm text-zinc-600">
-                <div class="w-5 h-5 rounded bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center">
-                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19V6l12-3v13"/></svg>
-                </div>
-                <span>© 2025 MuXolotl.</span>
-            </div>
-            <div class="flex items-center gap-6 text-xs text-zinc-600">
-                <a href="index.html" class="hover:text-zinc-400 transition-colors">Главная</a>
-                <a href="download.html" class="hover:text-zinc-400 transition-colors">Скачать</a>
-                <a href="about.html" class="hover:text-zinc-400 transition-colors">О проекте</a>
-                <a href="https://github.com/MuXolotl/VKMuX" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-400 transition-colors">GitHub</a>
-            </div>
+    <div class="nav-right">
+      <a class="btn ghost sm" href="https://github.com/MuXolotl/MusiMuX" target="_blank" rel="noopener noreferrer"><svg width="16" height="16"><use href="#i-github"/></svg><span>GitHub</span></a>
+      <a class="btn primary sm hide-sm" href="download.html">Скачать</a>
+      <button class="nav-toggle" aria-label="Меню" aria-expanded="false" aria-controls="navLinks"><svg width="18" height="18"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+<main>
+<section class="hero">
+  <div class="wrap">
+    <img class="hero-icon" src="images/icon.png" alt="" width="88" height="88">
+    <span class="version-pill"><i></i>Актуальная версия <b data-version>0.10.0</b></span>
+    <h1>Ваша музыка — <em>в&nbsp;настольном</em> приложении</h1>
+    <p class="lead">MusiMuX — музыкальный клиент для Windows, macOS и Linux. Библиотека, подборки, поиск, тексты песен и скачивание в одном окне, которое работает прямо на вашем компьютере.</p>
+    <div class="hero-actions">
+      <a class="btn primary lg" href="download.html"><svg width="18" height="18"><use href="#i-download"/></svg>Скачать бесплатно</a>
+      <a class="btn lg" href="about.html">О проекте</a>
+    </div>
+    <div class="hero-meta">
+      <span><svg width="14" height="14"><use href="#i-windows"/></svg>Windows 10+</span>
+      <span><svg width="14" height="14"><use href="#i-apple"/></svg>macOS</span>
+      <span><svg width="14" height="14"><use href="#i-linux"/></svg>Linux</span>
+    </div>
+    <a class="scroll-hint" href="#features"><span>Узнать больше</span><i class="mouse"><i></i></i></a>
+  </div>
+</section>
+<section class="shot" aria-label="Так выглядит MusiMuX">
+  <div class="wrap">
+    <div class="shot-frame">
+      <div class="mock" aria-hidden="true">
+        <div class="m-title">
+          <span class="m-brand"><span class="m-logo"><svg width="11" height="11"><use href="#i-play"/></svg></span><span class="m-grad">MusiMuX</span></span>
+          <span class="m-title-center"><b>Моя музыка</b><span>1 284 трека</span></span>
+          <span class="m-title-right">
+            <span class="ic"><svg width="14" height="14"><use href="#i-refresh"/></svg></span>
+            <span class="m-win"><span><svg width="14" height="14"><use href="#i-minimize"/></svg></span><span><svg width="12" height="12"><use href="#i-maximize"/></svg></span><span><svg width="14" height="14"><use href="#i-close"/></svg></span></span>
+          </span>
         </div>
-    </footer>
+        <div class="m-body">
+          <aside class="m-side">
+            <div class="m-side-top"><span class="ic"><svg width="20" height="20"><use href="#i-menu"/></svg></span><b class="m-grad">MusiMuX</b></div>
+            <nav class="m-nav">
+        <div><svg width="20" height="20"><use href="#i-home"/></svg><span>Главная</span></div>
+        <div class="active"><svg width="20" height="20"><use href="#i-music"/></svg><span>Моя музыка</span></div>
+        <div><svg width="20" height="20"><use href="#i-list"/></svg><span>Плейлисты</span></div>
+        <div><svg width="20" height="20"><use href="#i-heart"/></svg><span>Рекомендации</span></div>
+        <div><svg width="20" height="20"><use href="#i-compass"/></svg><span>Обзор</span></div>
+        <div><svg width="20" height="20"><use href="#i-search"/></svg><span>Поиск</span></div>
+            </nav>
+            <div class="m-side-bottom"><span class="m-avatar"></span><span class="name">MuXolotl</span><svg width="18" height="18"><use href="#i-settings"/></svg></div>
+          </aside>
+          <div class="m-main">
+            <div class="m-search"><div><svg width="16" height="16"><use href="#i-search"/></svg>Поиск по библиотеке…</div></div>
+            <div class="m-list">
+        <div class="m-row current">
+          <span class="m-cover m-eq"><i></i><i></i><i></i><i></i></span>
+          <span class="m-meta"><b>Полярный день</b><span>Орбита</span></span>
+          <span class="m-dur">3:47</span>
+          <span class="ic on"><svg width="16" height="16"><use href="#i-check-circle"/></svg></span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-heart-filled"/></svg></span>
+          <span class="ic dim"><svg width="17" height="17"><use href="#i-more"/></svg></span>
+        </div>
+        <div class="m-row">
+          <span class="m-cover c2"></span>
+          <span class="m-meta"><b>Тёплый ветер</b><span>Лана Север</span></span>
+          <span class="m-dur">4:12</span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-download"/></svg></span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-heart-filled"/></svg></span>
+          <span class="ic dim"><svg width="17" height="17"><use href="#i-more"/></svg></span>
+        </div>
+        <div class="m-row hover">
+          <span class="m-cover c3"></span>
+          <span class="m-meta"><b>Город без сна<svg width="11" height="11"><use href="#i-copy"/></svg></b><span>Mira &amp; Ночь</span></span>
+          <span class="m-dur">3:05</span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-download"/></svg></span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-heart-filled"/></svg></span>
+          <span class="ic dim"><svg width="17" height="17"><use href="#i-more"/></svg></span>
+        </div>
+        <div class="m-row">
+          <span class="m-cover c4"></span>
+          <span class="m-meta"><b>Последний трамвай</b><span>Квартал 9</span></span>
+          <span class="m-dur">2:58</span>
+          <span class="ic on"><svg width="16" height="16"><use href="#i-check-circle"/></svg></span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-heart-filled"/></svg></span>
+          <span class="ic dim"><svg width="17" height="17"><use href="#i-more"/></svg></span>
+        </div>
+        <div class="m-row">
+          <span class="m-cover c5"></span>
+          <span class="m-meta"><b>Over the Line</b><span>Nova Lane</span></span>
+          <span class="m-dur">3:33</span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-download"/></svg></span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-heart-filled"/></svg></span>
+          <span class="ic dim"><svg width="17" height="17"><use href="#i-more"/></svg></span>
+        </div>
+        <div class="m-row">
+          <span class="m-cover c6"></span>
+          <span class="m-meta"><b>Бумажные птицы</b><span>Тихий Дом</span></span>
+          <span class="m-dur">4:40</span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-download"/></svg></span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-heart-filled"/></svg></span>
+          <span class="ic dim"><svg width="17" height="17"><use href="#i-more"/></svg></span>
+        </div>
+        <div class="m-row">
+          <span class="m-cover c7"></span>
+          <span class="m-meta"><b>Weekend Signal</b><span>Fjord</span></span>
+          <span class="m-dur">3:21</span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-download"/></svg></span>
+          <span class="ic"><svg width="16" height="16"><use href="#i-heart-filled"/></svg></span>
+          <span class="ic dim"><svg width="17" height="17"><use href="#i-more"/></svg></span>
+        </div>
+            </div>
+          </div>
+        </div>
+        <div class="m-player">
+          <div class="m-now">
+            <span class="m-cover c1"></span>
+            <span class="m-meta"><b>Полярный день<svg width="11" height="11"><use href="#i-copy"/></svg></b><span>Орбита</span></span>
+            <span class="ic"><svg width="20" height="20"><use href="#i-heart-filled"/></svg></span>
+            <span class="ic"><svg width="20" height="20"><use href="#i-download"/></svg></span>
+          </div>
+          <div class="m-center">
+            <div class="m-ctrls">
+              <span class="tog on"><svg width="16" height="16"><use href="#i-shuffle"/></svg></span>
+              <span class="tog plain"><svg width="18" height="18"><use href="#i-skip-back"/></svg></span>
+              <span class="m-play"><svg width="20" height="20"><use href="#i-pause"/></svg></span>
+              <span class="tog plain"><svg width="18" height="18"><use href="#i-skip-forward"/></svg></span>
+              <span class="tog"><svg width="16" height="16"><use href="#i-repeat"/></svg></span>
+            </div>
+            <div class="m-seek"><span>1:26</span><span class="m-bar"><i></i></span><span>3:47</span></div>
+          </div>
+          <div class="m-right">
+            <span class="ic"><svg width="18" height="18"><use href="#i-file-text"/></svg></span>
+            <span class="ic"><svg width="18" height="18"><use href="#i-list"/></svg></span>
+            <span class="ic on"><svg width="18" height="18"><use href="#i-radio"/></svg></span>
+            <span class="m-vol"><svg width="18" height="18"><use href="#i-volume"/></svg><span class="m-bar"><i></i></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script src="js/main.js"></script>
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Возможности</span>
+      <h2>Всё, что нужно от музыкального плеера</h2>
+      <p>Библиотека, подборки, поиск, тексты, скачивание и звук — в одном окне, без вкладок браузера.</p>
+    </div>
+    <div class="features">
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-music"/></svg></span>
+      <h3>Библиотека и плейлисты</h3>
+      <p>Своя музыка, плейлисты и альбомы с обложками, добавление и удаление треков, поиск по библиотеке.</p>
+    </div>
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-compass"/></svg></span>
+      <h3>Главная и Обзор</h3>
+      <p>Персональные подборки, миксы, новинки, чарты, кураторы и жанры — как на телефоне, но в окне на ПК.</p>
+    </div>
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-search"/></svg></span>
+      <h3>Поиск</h3>
+      <p>Треки, исполнители, альбомы и подборки с подсказками по мере ввода; страницы музыкантов с дискографией.</p>
+    </div>
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-file-text"/></svg></span>
+      <h3>Текст песни</h3>
+      <p>Караоке-режим для синхронизированных текстов, обычный текст для остальных, полноэкранный режим «Сейчас играет».</p>
+    </div>
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-download"/></svg></span>
+      <h3>Скачивание</h3>
+      <p>Любой трек, плейлист или альбом — в MP3 с тегами и обложкой. Очередь с лимитом закачек, повтор и отмена.</p>
+    </div>
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-sliders"/></svg></span>
+      <h3>Звук</h3>
+      <p>Десятиполосный эквалайзер и кроссфейд между треками с настраиваемой длительностью.</p>
+    </div>
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-monitor"/></svg></span>
+      <h3>Трей и мини-плеер</h3>
+      <p>Компактный плеер у трея, управление воспроизведением и настраиваемое поведение при закрытии окна.</p>
+    </div>
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-keyboard"/></svg></span>
+      <h3>Клавиши</h3>
+      <p>Медиа-клавиши, глобальные сочетания и клавиатурная навигация: Escape, F5, боковые кнопки мыши.</p>
+    </div>
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-refresh"/></svg></span>
+      <h3>Автообновления</h3>
+      <p>Новые версии приходят с GitHub Releases: уведомлять, ставить автоматически или вручную — на выбор.</p>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Как устроено</span>
+      <h2>Работает у вас, а не где-то ещё</h2>
+      <p>У MusiMuX нет своих серверов. Приложение общается с музыкальным сервисом напрямую, а всё личное хранит только на вашем компьютере.</p>
+    </div>
+    <div class="points">
+      <div class="point"><span class="dot"></span><div><h3>Без посредников</h3><p>Ни один запрос не проходит через сторонние серверы — ни авторизация, ни воспроизведение, ни поиск.</p></div></div>
+      <div class="point"><span class="dot"></span><div><h3>Данные остаются локально</h3><p>Токен, настройки, кеши и скачанные файлы лежат в папке приложения на вашем диске.</p></div></div>
+      <div class="point"><span class="dot"></span><div><h3>Ничего лишнего по умолчанию</h3><p>Функции, которые что-то передают наружу, например трансляция трека в статус, включаются вручную.</p></div></div>
+      <div class="point"><span class="dot"></span><div><h3>Бесплатно, без рекламы и подписок</h3><p>Нужен только аккаунт музыкального сервиса. Приложение не добавляет своих ограничений.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="stack">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Технологии</span>
+      <h2>Под капотом</h2>
+      <p>Небольшое нативное окно, а не упакованный браузер. Rust-ядро общается с сервисом само — без внешних SDK и лишних модулей.</p>
+    </div>
+    <div class="stack">
+      <div class="stack-card">
+        <code>mux-api</code>
+        <b>Ядро на Rust</b>
+        <span>Авторизация · методы API · protobuf</span>
+      </div>
+      <span class="stack-arrow"><svg width="18" height="18"><use href="#i-chevron-right"/></svg></span>
+      <div class="stack-card">
+        <code>Tauri 2</code>
+        <b>Оболочка</b>
+        <span>Окно · трей · мини-плеер · обновления</span>
+      </div>
+      <span class="stack-arrow"><svg width="18" height="18"><use href="#i-chevron-right"/></svg></span>
+      <div class="stack-card">
+        <code>Svelte 5</code>
+        <b>Интерфейс</b>
+        <span>Runes · TypeScript · Vite</span>
+      </div>
+    </div>
+    <div class="chips">
+      <span>Rust</span><span>Tauri 2</span><span>Svelte 5</span><span>TypeScript</span><span>Protobuf</span><span>Vite</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="feedback">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Обратная связь</span>
+      <h2>Нашли баг или есть идея?</h2>
+      <p>Проект развивается по отзывам. Ошибки — в Issues, идеи и вопросы — в Discussions.</p>
+    </div>
+    <div class="links">
+      <a class="link-card" href="https://github.com/MuXolotl/MusiMuX/issues" target="_blank" rel="noopener noreferrer">
+        <span class="top"><svg width="18" height="18"><use href="#i-alert"/></svg>Issues</span>
+        <p>Сообщить об ошибке или посмотреть, что уже известно.</p>
+        <span class="go">Открыть →</span>
+      </a>
+      <a class="link-card" href="https://github.com/MuXolotl/MusiMuX/discussions" target="_blank" rel="noopener noreferrer">
+        <span class="top"><svg width="18" height="18"><use href="#i-chat"/></svg>Discussions</span>
+        <p>Предложить функцию, задать вопрос, обсудить, как сделать лучше.</p>
+        <span class="go">Открыть →</span>
+      </a>
+      <a class="link-card" href="https://github.com/MuXolotl/MusiMuX/releases" target="_blank" rel="noopener noreferrer">
+        <span class="top"><svg width="18" height="18"><use href="#i-package"/></svg>Releases</span>
+        <p>Все версии с описанием изменений и файлами сборок.</p>
+        <span class="go">Открыть →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="download.html">Скачать</a>
+      <a href="about.html">О проекте</a>
+      <a href="https://github.com/MuXolotl/MusiMuX" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+    <span>© 2026 MuXolotl</span>
+  </div>
+</footer>
+<script src="js/main.js"></script>
 </body>
 </html>
