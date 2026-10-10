@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>О проекте — MusiMuX</title>
-  <meta name="description" content="Что такое MusiMuX, как он устроен и чем отличается: локальная работа, приватность, обратная связь.">
+  <meta name="description" content="Что такое MusiMuX, как клиент хранит данные и обращается к музыкальному сервису. Возможности приложения и обратная связь.">
   <meta name="author" content="MuXolotl">
   <meta name="theme-color" content="#09090b">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://muxolotl.github.io/MusiMuX/about.html">
   <meta property="og:title" content="О проекте — MusiMuX">
-  <meta property="og:description" content="Что такое MusiMuX, как он устроен и чем отличается: локальная работа, приватность, обратная связь.">
+  <meta property="og:description" content="Что такое MusiMuX, как клиент хранит данные и обращается к музыкальному сервису. Возможности приложения и обратная связь.">
   <link rel="icon" type="image/png" href="images/icon.png">
   <link rel="apple-touch-icon" href="images/icon.png">
   <link rel="stylesheet" href="css/styles.css">
@@ -52,14 +52,14 @@
   </section>
   <section>
     <h2>Как устроено</h2>
-    <p>MusiMuX написан на Rust и Svelte поверх Tauri, поэтому это небольшое нативное окно, а не упакованный браузер с сотнями мегабайт. Клиент общается с музыкальным сервисом напрямую — у проекта нет серверов, через которые проходили бы ваши запросы или данные.</p>
-    <p>Токен, настройки, кеш обложек и скачанные файлы хранятся только на вашем компьютере. Функции, которые передают что-то наружу (например, трансляция трека в статус), выключены, пока вы сами их не включите.</p>
+    <p>MusiMuX написан на Rust и Svelte поверх Tauri, поэтому это небольшое нативное окно, а не упакованный браузер с сотнями мегабайт. Клиент напрямую обращается к музыкальному сервису; у проекта нет собственного сервера, через который проходили бы эти запросы.</p>
+    <p>Токен, настройки, кеш обложек, загруженные MP3 и скачанные файлы хранятся на вашем компьютере. Для входа, каталога и воспроизведения нужно подключение к музыкальному сервису — клиент не является офлайн-плеером. Трансляцию текущего трека в статус можно включить или выключить в настройках.</p>
   </section>
   <section>
     <h2>Технологии</h2>
-    <p>Проект сделан как самостоятельная альтернатива веб-плееру: своё Rust-ядро <code>mux-api</code> реализует только нужные методы сервиса — без внешних SDK и лишних модулей.</p>
+    <p>Проект сделан как самостоятельная альтернатива веб-плееру: своё Rust-ядро реализует только нужные методы сервиса — без внешних SDK и лишних модулей.</p>
     <dl class="stack-list">
-      <div><dt>Ядро</dt><dd>Rust · крейт <code>mux-api</code>: авторизация, методы API, protobuf</dd></div>
+      <div><dt>Ядро</dt><dd>Rust · собственный крейт: авторизация, методы API, protobuf</dd></div>
       <div><dt>Оболочка</dt><dd>Tauri 2: окно, трей, мини-плеер, автообновления</dd></div>
       <div><dt>Интерфейс</dt><dd>Svelte 5 + TypeScript, сборка Vite</dd></div>
     </dl>
@@ -68,11 +68,13 @@
     <h2>Возможности</h2>
     <ul class="check">
       <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Вход по логину и паролю с любым способом 2FA или по токену</span></li>
-      <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Библиотека, плейлисты, альбомы, страницы исполнителей и кураторов</span></li>
+      <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Библиотека, альбомы, страницы исполнителей и кураторов</span></li>
+      <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Создание и редактирование плейлистов, добавление треков и фильтры «Все», «Мои» и «Добавленные»</span></li>
       <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Главная и Обзор: подборки, миксы, новинки, чарты, жанры</span></li>
       <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Поиск с подсказками по трекам, исполнителям и подборкам</span></li>
       <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Текст песни с караоке-режимом и экран «Сейчас играет»</span></li>
       <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Скачивание треков, плейлистов и альбомов в MP3 с тегами</span></li>
+      <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Загрузка собственных MP3 в «Мою музыку» — до 200 МБ на файл, с очередью, прогрессом, редактированием названия и исполнителя, отменой и повтором</span></li>
       <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Эквалайзер и кроссфейд между треками</span></li>
       <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Мини-плеер у трея, медиа-клавиши и глобальные сочетания</span></li>
       <li><svg width="15" height="15"><use href="#i-check"/></svg><span>Трансляция текущего трека в статус (по желанию)</span></li>

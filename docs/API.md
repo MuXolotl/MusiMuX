@@ -447,7 +447,7 @@ VK Web вызывает тот же метод внутри `web.api.vk.ru/metho
 
 | Метод | Параметры | Ответ | Примечание |
 |---|---|---|---|
-| `photos.getAudioPlaylistCoverUploadServer` | `owner_id`, `playlist_id` | `{ "upload_url": "https://pu.vk.ru/gu/photo/v2/upload?token=..." }` | Обложка плейлиста |
+| `photos.getAudioPlaylistCoverUploadServer` | `owner_id`, `playlist_id`, `v` | `{ "upload_url": "..." }` | Обложка плейлиста: на `upload_url` файл уходит multipart-полем `photo` (JPEG/PNG до 10 МБ). Каким будет `upload_url` и ответ, решает `v`: с `5.143`/`5.199` — старый сервер (`upload.php`) с `{ "photo": "...", "hash": "..." }`; с внутренними `8.x` — `pu.vk.ru/gu/photo/v2/upload`, отвечающий `{ "sha", "secret", "hash", ... }`. Скрытый `audio.setPlaylistCoverPhoto` принимает только значение старого сервера: на собранное из `sha`/`secret` отвечает `129 Invalid photo`. И сервер обложки, и саму привязку запрашиваем со старым `v` (5.143): в привязке достаточно `owner_id`, `photo`, `hash` — id плейлиста не обязателен |
 | `apps.getAppLaunchParams` | `mini_app_id` | Объект параметров запуска | Для части токенов — ошибка `100` |
 | `auth.getCredentialsForService` | `uuid`, `timestamp`, `digest_hash`, `package`, `app_id`, `app_secret` | Сервисные токены UMA | В приложении VK Музыки: `app_id=6767438`, `package=com.uma.musicvk`; для нашей сессии — ошибка `100` |
 
@@ -468,7 +468,10 @@ VK Web вызывает тот же метод внутри `web.api.vk.ru/metho
 | `audio.editPlaylist` | `owner_id`, `playlist_id`, `title` | `1` |
 | `audio.deletePlaylist` | `owner_id`, `playlist_id` | `1` |
 | `audio.followPlaylist` | `owner_id`, `playlist_id`, `access_key` | `{ "owner_id": int, "playlist_id": int }` |
-| `audio.deletePlaylistCoverPhoto` / `audio.setPlaylistCoverPhoto` | `owner_id`, `playlist_id` | `1` |
+| `audio.savePlaylistAsCopy` | `owner_id`, `playlist_id`, `access_key` | Полный объект нового плейлиста |
+| `audio.reorderInPlaylist` | `playlist_id`, `owner_id`, `actions` | `1` |
+| `audio.deletePlaylistCoverPhoto` | `owner_id`, `playlist_id` | `1` |
+| `audio.setPlaylistCoverPhoto` | `owner_id` (встречается и `playlist_owner_id`), `playlist_id`, `photo`, `hash` | `1` |
 | `audio.setBroadcast` | `audio` (`owner_id_audio_id`) | `[int]` — слушатели |
 
 Особенности:
@@ -476,7 +479,11 @@ VK Web вызывает тот же метод внутри `web.api.vk.ru/metho
 - `audio.restore` возвращает полный `Audio`, а не `1` — интерфейс обновляется сразу;
 - дизлайки принимают `audio_ids` (список); методов `audio.addLike`/`removeLike` не существует (`3`);
 - у `followArtist`/`unfollowArtist` обязателен `ref` (например, `ref=audio_player`); каталожный аналог — кнопка `toggle_artist_subscription`;
-- `followPlaylist` работает лишь с `id >= 0`: автоподборки каталога (отрицательный id) не подписываются.
+- `followPlaylist` работает лишь с `id >= 0`: автоподборки каталога (отрицательный id) не подписываются; ответ — запись плейлиста в медиатеке (`{ owner_id, playlist_id }`), у части токенов вместо объекта приходит «готово» — пару id тогда даёт `audio.getPlaylistById` (поле `followed`);
+- отдельного `unfollowPlaylist` нет: подписка снимается `audio.deletePlaylist` по паре из `followed` — удаляется запись медиатеки, сам плейлист остаётся у владельца;
+- `savePlaylistAsCopy` доступен, когда в `permissions` плейлиста `save_as_copy = true` (у автоподборок каталога с отрицательным id), копия появляется в своих плейлистах;
+- `actions` у `reorderInPlaylist` — JSON-массив троек `[owner_id, audio_id, new_index]`, по одной на перемещённый трек: `new_index` — позиция в плейлисте после перемещения (с нуля);
+- загрузка обложки состоит из трёх шагов: `photos.getAudioPlaylistCoverUploadServer` → multipart-загрузка с полем `photo` → `audio.setPlaylistCoverPhoto` с полученными `photo` и `hash`; убрать обложку — `audio.deletePlaylistCoverPhoto`.
 
 ---
 

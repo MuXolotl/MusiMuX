@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MusiMuX — музыкальный клиент для Windows, macOS и Linux</title>
-  <meta name="description" content="MusiMuX — настольный музыкальный клиент: библиотека, подборки, поиск, тексты песен, скачивание. Работает локально, без своих серверов.">
+  <meta name="description" content="MusiMuX — музыкальный клиент: библиотека, плейлисты, поиск, тексты песен, скачивание и загрузка MP3. Работает без собственных серверов.">
   <meta name="author" content="MuXolotl">
   <meta name="theme-color" content="#09090b">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://muxolotl.github.io/MusiMuX/">
   <meta property="og:title" content="MusiMuX — музыкальный клиент для Windows, macOS и Linux">
-  <meta property="og:description" content="MusiMuX — настольный музыкальный клиент: библиотека, подборки, поиск, тексты песен, скачивание. Работает локально, без своих серверов.">
+  <meta property="og:description" content="MusiMuX — музыкальный клиент: библиотека, плейлисты, поиск, тексты песен, скачивание и загрузка MP3. Работает без собственных серверов.">
   <link rel="icon" type="image/png" href="images/icon.png">
   <link rel="apple-touch-icon" href="images/icon.png">
   <link rel="stylesheet" href="css/styles.css">
@@ -21,6 +21,7 @@
 <symbol id="i-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
 <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
 <symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
 <symbol id="i-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
 <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
@@ -76,7 +77,7 @@
     <img class="hero-icon" src="images/icon.png" alt="" width="88" height="88">
     <span class="version-pill"><i></i>Актуальная версия <b data-version>0.10.0</b></span>
     <h1>Ваша музыка — <em>в&nbsp;настольном</em> приложении</h1>
-    <p class="lead">MusiMuX — музыкальный клиент для Windows, macOS и Linux. Библиотека, подборки, поиск, тексты песен и скачивание в одном окне, которое работает прямо на вашем компьютере.</p>
+    <p class="lead">MusiMuX — музыкальный клиент для Windows, macOS и Linux. Библиотека, плейлисты, подборки, поиск, тексты песен, скачивание и загрузка MP3 в «Мою музыку» — в одном окне на вашем компьютере.</p>
     <div class="hero-actions">
       <a class="btn primary lg" href="download.html"><svg width="18" height="18"><use href="#i-download"/></svg>Скачать бесплатно</a>
       <a class="btn lg" href="about.html">О проекте</a>
@@ -89,13 +90,23 @@
     <a class="scroll-hint" href="#features"><span>Узнать больше</span><i class="mouse"><i></i></i></a>
   </div>
 </section>
-<section class="shot" aria-label="Так выглядит MusiMuX">
+<section class="shot" aria-label="Предпросмотр MusiMuX">
   <div class="wrap">
+    <div class="shot-head">
+      <span class="eyebrow">Внутри приложения</span>
+      <h2>Посмотрите, как устроен MusiMuX</h2>
+      <p>Макеты показывают интерфейс на примере вымышленных треков.</p>
+    </div>
+    <div class="shot-scenes" role="group" aria-label="Выбор экрана" hidden>
+      <button type="button" data-mock-scene="library" aria-pressed="true">Моя музыка</button>
+      <button type="button" data-mock-scene="explore" aria-pressed="false">Обзор</button>
+      <button type="button" data-mock-scene="nowplaying" aria-pressed="false">Сейчас играет</button>
+    </div>
     <div class="shot-frame">
-      <div class="mock" aria-hidden="true">
+      <div class="mock" data-scene="library" aria-hidden="true">
         <div class="m-title">
           <span class="m-brand"><span class="m-logo"><svg width="11" height="11"><use href="#i-play"/></svg></span><span class="m-grad">MusiMuX</span></span>
-          <span class="m-title-center"><b>Моя музыка</b><span>1 284 трека</span></span>
+          <span class="m-title-center"><b data-mock-title>Моя музыка</b><span data-mock-subtitle>1 284 трека</span></span>
           <span class="m-title-right">
             <span class="ic"><svg width="14" height="14"><use href="#i-refresh"/></svg></span>
             <span class="m-win"><span><svg width="14" height="14"><use href="#i-minimize"/></svg></span><span><svg width="12" height="12"><use href="#i-maximize"/></svg></span><span><svg width="14" height="14"><use href="#i-close"/></svg></span></span>
@@ -106,15 +117,15 @@
             <div class="m-side-top"><span class="ic"><svg width="20" height="20"><use href="#i-menu"/></svg></span><b class="m-grad">MusiMuX</b></div>
             <nav class="m-nav">
         <div><svg width="20" height="20"><use href="#i-home"/></svg><span>Главная</span></div>
-        <div class="active"><svg width="20" height="20"><use href="#i-music"/></svg><span>Моя музыка</span></div>
+        <div class="active" data-mock-nav="library"><svg width="20" height="20"><use href="#i-music"/></svg><span>Моя музыка</span></div>
         <div><svg width="20" height="20"><use href="#i-list"/></svg><span>Плейлисты</span></div>
         <div><svg width="20" height="20"><use href="#i-heart"/></svg><span>Рекомендации</span></div>
-        <div><svg width="20" height="20"><use href="#i-compass"/></svg><span>Обзор</span></div>
+        <div data-mock-nav="explore"><svg width="20" height="20"><use href="#i-compass"/></svg><span>Обзор</span></div>
         <div><svg width="20" height="20"><use href="#i-search"/></svg><span>Поиск</span></div>
             </nav>
             <div class="m-side-bottom"><span class="m-avatar"></span><span class="name">MuXolotl</span><svg width="18" height="18"><use href="#i-settings"/></svg></div>
           </aside>
-          <div class="m-main">
+          <div class="m-main" data-mock-panel="library">
             <div class="m-search"><div><svg width="16" height="16"><use href="#i-search"/></svg>Поиск по библиотеке…</div></div>
             <div class="m-list">
         <div class="m-row current">
@@ -175,6 +186,28 @@
         </div>
             </div>
           </div>
+          <div class="m-main m-explore" data-mock-panel="explore" hidden>
+            <div class="m-catalog-banners">
+              <div class="m-catalog-banner side left"></div>
+              <div class="m-catalog-banner center"><span><b>Музыка в движении</b><small>Подборки для новых маршрутов</small></span></div>
+              <div class="m-catalog-banner side right"></div>
+            </div>
+            <div class="m-catalog-heading"><b>Популярное сегодня</b><svg width="18" height="18"><use href="#i-chevron-right"/></svg></div>
+            <div class="m-catalog-tracks">
+              <div class="m-catalog-column">
+                <div class="m-catalog-track"><span class="m-cover c1"></span><span class="m-meta"><b>Полярный день</b><span>Орбита</span></span><small>3:47</small></div>
+                <div class="m-catalog-track"><span class="m-cover c2"></span><span class="m-meta"><b>Тёплый ветер</b><span>Лана Север</span></span><small>4:12</small></div>
+                <div class="m-catalog-track"><span class="m-cover c3"></span><span class="m-meta"><b>Город без сна</b><span>Mira &amp; Ночь</span></span><small>3:05</small></div>
+              </div>
+              <div class="m-catalog-column">
+                <div class="m-catalog-track"><span class="m-cover c4"></span><span class="m-meta"><b>Последний трамвай</b><span>Квартал 9</span></span><small>2:58</small></div>
+                <div class="m-catalog-track"><span class="m-cover c5"></span><span class="m-meta"><b>Over the Line</b><span>Nova Lane</span></span><small>3:33</small></div>
+                <div class="m-catalog-track"><span class="m-cover c6"></span><span class="m-meta"><b>Бумажные птицы</b><span>Тихий Дом</span></span><small>4:40</small></div>
+              </div>
+            </div>
+            <div class="m-catalog-divider"></div>
+            <div class="m-catalog-heading"><b>Подборки</b><svg width="18" height="18"><use href="#i-chevron-right"/></svg></div>
+          </div>
         </div>
         <div class="m-player">
           <div class="m-now">
@@ -200,7 +233,49 @@
             <span class="m-vol"><svg width="18" height="18"><use href="#i-volume"/></svg><span class="m-bar"><i></i></span></span>
           </div>
         </div>
+        <div class="m-fullplayer" data-mock-panel="nowplaying" hidden>
+          <div class="m-full-bg"></div>
+          <div class="m-full-top">
+            <span class="m-full-collapse"><svg width="20" height="20"><use href="#i-chevron-down"/></svg>Свернуть</span>
+            <b>Сейчас играет</b>
+            <span class="m-full-windows"><svg width="14" height="14"><use href="#i-minimize"/></svg><svg width="12" height="12"><use href="#i-maximize"/></svg><svg width="14" height="14"><use href="#i-close"/></svg></span>
+          </div>
+          <div class="m-full-body">
+            <div class="m-full-stage">
+              <div class="m-full-art">
+                <img src="images/preview-cover.svg" alt="">
+                <span class="m-full-download"><svg width="19" height="19"><use href="#i-download"/></svg></span>
+                <span class="m-full-library"><svg width="19" height="19"><use href="#i-heart-filled"/></svg></span>
+                <div class="m-full-art-controls">
+                  <svg width="20" height="20"><use href="#i-shuffle"/></svg>
+                  <svg width="26" height="26"><use href="#i-skip-back"/></svg>
+                  <span><svg width="30" height="30"><use href="#i-pause"/></svg></span>
+                  <svg width="26" height="26"><use href="#i-skip-forward"/></svg>
+                  <svg width="20" height="20"><use href="#i-repeat"/></svg>
+                </div>
+              </div>
+              <div class="m-full-meta"><b>Полярный день</b><span>Орбита</span></div>
+              <div class="m-full-seek"><span>1:26</span><span class="m-bar"><i></i></span><span>3:47</span></div>
+              <div class="m-full-under">
+                <span class="on"><svg width="18" height="18"><use href="#i-file-text"/></svg>Текст</span>
+                <span><svg width="18" height="18"><use href="#i-list"/></svg>Очередь</span>
+                <span class="m-full-volume"><svg width="18" height="18"><use href="#i-volume"/></svg><span class="m-bar"><i></i></span></span>
+              </div>
+            </div>
+            <div class="m-full-lyrics">
+              <p>Город засыпает, и свет вдали горит</p>
+              <p class="active">Навстречу утру музыка летит</p>
+              <p>Оставим позади знакомые пути</p>
+              <p>И новый день уже встречаем впереди</p>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="shot-caption" aria-live="polite">
+      <p data-mock-caption="library"><b>Моя музыка.</b> Треки, плейлисты и управление воспроизведением — под рукой.</p>
+      <p data-mock-caption="explore" hidden><b>Обзор.</b> Баннеры, треки и подборки собраны в одной ленте.</p>
+      <p data-mock-caption="nowplaying" hidden><b>Сейчас играет.</b> Крупная обложка, управление плеером и синхронизированный текст песни.</p>
     </div>
   </div>
 </section>
@@ -210,13 +285,13 @@
     <div class="section-head">
       <span class="eyebrow">Возможности</span>
       <h2>Всё, что нужно от музыкального плеера</h2>
-      <p>Библиотека, подборки, поиск, тексты, скачивание и звук — в одном окне, без вкладок браузера.</p>
+      <p>Библиотека, плейлисты, подборки, поиск, тексты, скачивание и загрузка MP3 — в одном окне.</p>
     </div>
     <div class="features">
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-music"/></svg></span>
       <h3>Библиотека и плейлисты</h3>
-      <p>Своя музыка, плейлисты и альбомы с обложками, добавление и удаление треков, поиск по библиотеке.</p>
+      <p>Своя музыка, плейлисты и альбомы с обложками. Создавайте и редактируйте плейлисты, добавляйте в них треки и выбирайте фильтры «Все», «Мои» и «Добавленные».</p>
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-compass"/></svg></span>
@@ -235,8 +310,8 @@
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-download"/></svg></span>
-      <h3>Скачивание</h3>
-      <p>Любой трек, плейлист или альбом — в MP3 с тегами и обложкой. Очередь с лимитом закачек, повтор и отмена.</p>
+      <h3>Скачивание и загрузка</h3>
+      <p>Скачивайте треки, плейлисты и альбомы в MP3 с тегами и обложкой. Загружайте свои MP3 в «Мою музыку» — до 200 МБ на файл, с очередью, прогрессом, отменой и повтором.</p>
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-sliders"/></svg></span>
@@ -267,12 +342,12 @@
     <div class="section-head">
       <span class="eyebrow">Как устроено</span>
       <h2>Работает у вас, а не где-то ещё</h2>
-      <p>У MusiMuX нет своих серверов. Приложение общается с музыкальным сервисом напрямую, а всё личное хранит только на вашем компьютере.</p>
+      <p>У MusiMuX нет собственных серверов. Для входа, каталога и воспроизведения приложение обращается к музыкальному сервису напрямую; токен, настройки, кеш и скачанные файлы хранятся на вашем компьютере.</p>
     </div>
     <div class="points">
-      <div class="point"><span class="dot"></span><div><h3>Без посредников</h3><p>Ни один запрос не проходит через сторонние серверы — ни авторизация, ни воспроизведение, ни поиск.</p></div></div>
-      <div class="point"><span class="dot"></span><div><h3>Данные остаются локально</h3><p>Токен, настройки, кеши и скачанные файлы лежат в папке приложения на вашем диске.</p></div></div>
-      <div class="point"><span class="dot"></span><div><h3>Ничего лишнего по умолчанию</h3><p>Функции, которые что-то передают наружу, например трансляция трека в статус, включаются вручную.</p></div></div>
+      <div class="point"><span class="dot"></span><div><h3>Прямое соединение</h3><p>Авторизация, каталог и воспроизведение работают напрямую с музыкальным сервисом — запросы не проходят через серверы MusiMuX.</p></div></div>
+      <div class="point"><span class="dot"></span><div><h3>Данные хранятся на вашем устройстве</h3><p>На компьютере остаются токен, настройки, кеши и скачанные файлы.</p></div></div>
+      <div class="point"><span class="dot"></span><div><h3>Дополнительные функции — по желанию</h3><p>Трансляция текущего трека в статус выключена, пока вы сами её не включите.</p></div></div>
       <div class="point"><span class="dot"></span><div><h3>Бесплатно, без рекламы и подписок</h3><p>Нужен только аккаунт музыкального сервиса. Приложение не добавляет своих ограничений.</p></div></div>
     </div>
   </div>
@@ -287,8 +362,8 @@
     </div>
     <div class="stack">
       <div class="stack-card">
-        <code>mux-api</code>
-        <b>Ядро на Rust</b>
+        <code>Rust</code>
+        <b>Ядро API</b>
         <span>Авторизация · методы API · protobuf</span>
       </div>
       <span class="stack-arrow"><svg width="18" height="18"><use href="#i-chevron-right"/></svg></span>
