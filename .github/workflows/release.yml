@@ -16,6 +16,11 @@ on:
         required: false
         type: boolean
         default: false
+      source_ref:
+        description: 'Ветка рабочего репозитория'
+        required: true
+        default: 'main'
+        type: string
       build_linux_amd64:
         description: 'Собрать Linux x64 (.deb, .AppImage)'
         required: false
@@ -65,7 +70,16 @@ jobs:
         with:
           repository: MuXolotl/MusiMuX-dev
           token: ${{ secrets.VKMUX_BOT_TOKEN }}
-          ref: main
+          ref: ${{ github.event.inputs.source_ref }}
+
+      - name: 🛡️ Обычный релиз только из main
+        # Коммит версии и тег уходят в main приватного репо: из другой ветки это запрещено
+        if: ${{ github.event.inputs.prerelease != 'true' && github.event.inputs.prerelease != true }}
+        run: |
+          if [ "${{ github.event.inputs.source_ref }}" != "main" ]; then
+            echo "Обычный релиз собирается только из main; для других веток включите pre-release" >&2
+            exit 1
+          fi
 
       - name: 📝 Validate changelog
         # Pre-release без описания: CHANGELOG не читаем и приватный репо не трогаем
@@ -198,10 +212,10 @@ jobs:
         with:
           repository: MuXolotl/MusiMuX-dev
           token: ${{ secrets.VKMUX_BOT_TOKEN }}
-          ref: main
+          ref: ${{ github.event.inputs.source_ref }}
 
       - name: ⬇️ Pull latest
-        run: git pull origin main
+        run: git pull origin "${{ github.event.inputs.source_ref }}"
 
       - name: 🔧 Install dependencies (ubuntu)
         if: ${{ startsWith(matrix.platform, 'ubuntu') }}
