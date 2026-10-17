@@ -358,6 +358,26 @@ jobs:
           chmod +x src-tauri/binaries/ffmpeg-aarch64-apple-darwin
           rm -f ffmpeg-temp.zip
 
+      - name: Проверка FFmpeg (локальный MP3 и HLS по сети)
+        shell: bash
+        run: |
+          shopt -s nullglob
+          FILES=(src-tauri/binaries/ffmpeg-*)
+          if [ "${#FILES[@]}" -ne 1 ]; then
+            echo "Ожидался один файл FFmpeg, найдено: ${#FILES[@]}"
+            exit 1
+          fi
+          BIN="${FILES[0]}"
+          echo "Проверяем $BIN"
+          # 1. Кодирование без сети
+          "$BIN" -hide_banner -loglevel error -y -f lavfi -i sine=d=1 -c:a libmp3lame check-local.mp3
+          # 2. Загрузка HLS по HTTPS и перекодирование в MP3, как в приложении.
+          #    Падение процесса (например, сегфолт) роняет шаг.
+          "$BIN" -hide_banner -loglevel error -y -i "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8" -t 5 -c:a libmp3lame -b:a 320k -f mp3 check-hls.mp3
+          test -s check-hls.mp3
+          rm -f check-local.mp3 check-hls.mp3
+          echo "FFmpeg работает"
+
       - name: 🏗️ Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
