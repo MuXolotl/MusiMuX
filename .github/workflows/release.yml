@@ -17,7 +17,7 @@ on:
         type: boolean
         default: false
       source_ref:
-        description: 'Ветка рабочего репозитория'
+        description: 'Ветка приватного репозитория'
         required: true
         default: 'main'
         type: string
@@ -190,20 +190,42 @@ jobs:
           git tag "v$VERSION" || echo "Tag v$VERSION already exists"
           git push --follow-tags origin HEAD:main || git push origin HEAD:main
 
+  plan:
+    name: 🧭 Выбор платформ
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - name: 🧭 Собрать список сборок
+        id: plan
+        env:
+          BUILD_LINUX_AMD64: ${{ github.event.inputs.build_linux_amd64 }}
+          BUILD_LINUX_ARM64: ${{ github.event.inputs.build_linux_arm64 }}
+          BUILD_WINDOWS_AMD64: ${{ github.event.inputs.build_windows_amd64 }}
+          BUILD_MACOS_ARM64: ${{ github.event.inputs.build_macos_arm64 }}
+          BUILD_MACOS_AMD64: ${{ github.event.inputs.build_macos_amd64 }}
+        run: |
+          items=()
+          add() { items+=("{\"platform\":\"$1\",\"args\":\"$2\",\"job_name\":\"$3\"}"); }
+          [[ "$BUILD_LINUX_AMD64" == "true" ]]   && add ubuntu-22.04     ""                                 linux-amd64
+          [[ "$BUILD_LINUX_ARM64" == "true" ]]   && add ubuntu-22.04-arm ""                                 linux-arm64
+          [[ "$BUILD_WINDOWS_AMD64" == "true" ]] && add windows-latest   ""                                 windows-amd64
+          [[ "$BUILD_MACOS_ARM64" == "true" ]]   && add macos-latest     "--target aarch64-apple-darwin"    macos-arm64
+          [[ "$BUILD_MACOS_AMD64" == "true" ]]   && add macos-latest     "--target x86_64-apple-darwin"     macos-amd64
+          if [ ${#items[@]} -eq 0 ]; then
+            echo "Не выбрано ни одной платформы" >&2
+            exit 1
+          fi
+          matrix="{\"include\":[$(IFS=,; echo "${items[*]}")]}"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "$matrix"
+
   build:
     name: 🏗️ Build ${{ matrix.job_name }}
-    needs: version
+    needs: [version, plan]
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - { platform: ubuntu-22.04,     args: "",                              job_name: linux-amd64,   enabled: "${{ inputs.build_linux_amd64 }}" }
-          - { platform: ubuntu-22.04-arm, args: "",                              job_name: linux-arm64,   enabled: "${{ inputs.build_linux_arm64 }}" }
-          - { platform: macos-latest,     args: "--target aarch64-apple-darwin", job_name: macos-arm64,   enabled: "${{ inputs.build_macos_arm64 }}" }
-          - { platform: macos-latest,     args: "--target x86_64-apple-darwin",  job_name: macos-amd64,   enabled: "${{ inputs.build_macos_amd64 }}" }
-          - { platform: windows-latest,   args: "",                              job_name: windows-amd64, enabled: "${{ inputs.build_windows_amd64 }}" }
-    # Невыбранные платформы пропускаются; enabled приходит как строка или как bool
-    if: ${{ matrix.enabled == 'true' || matrix.enabled == true }}
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     runs-on: ${{ matrix.platform }}
 
     steps:
