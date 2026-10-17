@@ -279,6 +279,7 @@ jobs:
           echo "MACOSX_DEPLOYMENT_TARGET=10.13"                >> $GITHUB_ENV
 
       - name: 🔄 Set version in working copy (без коммита)
+        shell: bash
         run: |
           VERSION="${{ needs.version.outputs.version }}"
           export VERSION
@@ -286,6 +287,18 @@ jobs:
           sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" src-tauri/tauri.conf.json
           sed -i "s/^version = \".*\"/version = \"$VERSION\"/" src-tauri/Cargo.toml
           grep -q "\"version\": \"$VERSION\"" src-tauri/tauri.conf.json || { echo "tauri.conf.json: версия не проставлена" >&2; exit 1; }
+          # MSI (WiX) принимает только числовую версию: 0.13.0-beta.1 -> 0.13.0.1.
+          # Версия приложения остаётся прежней; сопоставление нужно только для MSI.
+          base="${VERSION%%-*}"
+          wix="$base"
+          if [[ "$VERSION" == *-* ]]; then
+            pre="${VERSION#*-}"
+            last="${pre##*.}"
+            if [[ "$last" =~ ^[0-9]+$ ]]; then n="$last"; else n=0; fi
+            wix="$base.$n"
+          fi
+          echo "{\"bundle\":{\"windows\":{\"wix\":{\"version\":\"$wix\"}}}}" > "$RUNNER_TEMP/wix-version.json"
+          echo "MSI version: $wix"
 
       - name: 📦 Install frontend dependencies
         run: npm ci
@@ -353,7 +366,7 @@ jobs:
           APPIMAGE_EXTRACT_AND_RUN: 1
           NO_STRIP: "true"
         with:
-          args: ${{ matrix.args }}
+          args: ${{ matrix.args }} --config ${{ runner.temp }}/wix-version.json
 
       - name: 📝 Rename artifacts
         shell: bash
