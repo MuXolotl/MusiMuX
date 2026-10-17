@@ -66,7 +66,7 @@ jobs:
       is_prerelease: ${{ github.event.inputs.prerelease }}
     steps:
       - name: 📥 Checkout private source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: MuXolotl/MusiMuX-dev
           token: ${{ secrets.VKMUX_BOT_TOKEN }}
@@ -114,7 +114,7 @@ jobs:
           PY
 
       - name: 📦 Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: 'npm'
@@ -230,7 +230,7 @@ jobs:
 
     steps:
       - name: 📥 Checkout private source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: MuXolotl/MusiMuX-dev
           token: ${{ secrets.VKMUX_BOT_TOKEN }}
@@ -257,7 +257,7 @@ jobs:
           sudo update-ca-certificates -f
 
       - name: 📦 Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: 'npm'
@@ -320,23 +320,23 @@ jobs:
         if: matrix.job_name == 'linux-amd64'
         shell: bash
         run: |
-          curl -L -o ffmpeg-temp.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
-          tar -xf ffmpeg-temp.tar.xz
-          FFMPEG_DIR=$(find . -maxdepth 1 -type d -name "ffmpeg-*-amd64-static" | head -n 1)
-          mv "$FFMPEG_DIR/ffmpeg" src-tauri/binaries/ffmpeg-x86_64-unknown-linux-gnu
+          curl -L -o ffmpeg-temp.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-lgpl.tar.xz
+          tar -xJf ffmpeg-temp.tar.xz
+          FFMPEG_BIN=ffmpeg-master-latest-linux64-lgpl/bin/ffmpeg
+          mv "$FFMPEG_BIN" src-tauri/binaries/ffmpeg-x86_64-unknown-linux-gnu
           chmod +x src-tauri/binaries/ffmpeg-x86_64-unknown-linux-gnu
-          rm -rf "$FFMPEG_DIR" ffmpeg-temp.tar.xz
+          rm -rf ffmpeg-master-latest-linux64-lgpl ffmpeg-temp.tar.xz
 
       - name: 📥 Download FFmpeg Sidecar (Linux ARM64)
         if: matrix.job_name == 'linux-arm64'
         shell: bash
         run: |
-          curl -L -o ffmpeg-temp.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz
-          tar -xf ffmpeg-temp.tar.xz
-          FFMPEG_DIR=$(find . -maxdepth 1 -type d -name "ffmpeg-*-arm64-static" | head -n 1)
-          mv "$FFMPEG_DIR/ffmpeg" src-tauri/binaries/ffmpeg-aarch64-unknown-linux-gnu
+          curl -L -o ffmpeg-temp.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linuxarm64-lgpl.tar.xz
+          tar -xJf ffmpeg-temp.tar.xz
+          FFMPEG_BIN=ffmpeg-master-latest-linuxarm64-lgpl/bin/ffmpeg
+          mv "$FFMPEG_BIN" src-tauri/binaries/ffmpeg-aarch64-unknown-linux-gnu
           chmod +x src-tauri/binaries/ffmpeg-aarch64-unknown-linux-gnu
-          rm -rf "$FFMPEG_DIR" ffmpeg-temp.tar.xz
+          rm -rf ffmpeg-master-latest-linuxarm64-lgpl ffmpeg-temp.tar.xz
 
       - name: 📥 Download FFmpeg Sidecar (macOS Intel)
         if: matrix.job_name == 'macos-amd64'
@@ -467,7 +467,7 @@ jobs:
           EOF
 
       - name: 📤 Upload to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -547,7 +547,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
           token: ${{ secrets.VKMUX_BOT_TOKEN }}
