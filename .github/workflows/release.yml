@@ -16,6 +16,31 @@ on:
         required: false
         type: boolean
         default: false
+      build_linux_amd64:
+        description: 'Собрать Linux x64 (.deb, .AppImage)'
+        required: false
+        type: boolean
+        default: true
+      build_linux_arm64:
+        description: 'Собрать Linux ARM64 (.deb, .AppImage)'
+        required: false
+        type: boolean
+        default: true
+      build_windows_amd64:
+        description: 'Собрать Windows x64 (.msi, .exe)'
+        required: false
+        type: boolean
+        default: true
+      build_macos_arm64:
+        description: 'Собрать macOS Apple Silicon (.dmg)'
+        required: false
+        type: boolean
+        default: true
+      build_macos_amd64:
+        description: 'Собрать macOS Intel (.dmg)'
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -43,6 +68,8 @@ jobs:
           ref: main
 
       - name: 📝 Validate changelog
+        # Pre-release без описания: CHANGELOG не читаем и приватный репо не трогаем
+        if: ${{ github.event.inputs.prerelease != 'true' && github.event.inputs.prerelease != true }}
         run: |
           VERSION="${{ github.event.inputs.version }}"
           export VERSION
@@ -82,6 +109,9 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: 🔄 Sync version to all files
+        # Коммит, тег и пуш в main — только для обычного релиза. Pre-release
+        # ничего не пишет в приватный репо: версию сборка ставит у себя (см. build)
+        if: ${{ github.event.inputs.prerelease != 'true' && github.event.inputs.prerelease != true }}
         run: |
           VERSION="${{ github.event.inputs.version }}"
           export VERSION
@@ -89,6 +119,13 @@ jobs:
           npm version "$VERSION" --no-git-tag-version --allow-same-version
           sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" src-tauri/tauri.conf.json
           sed -i "s/^version = \".*\"/version = \"$VERSION\"/" src-tauri/Cargo.toml
+          # Запасная версия в разметке зеркала сайта: при загрузке страницы её
+          # подменяет releases.json, но без сети читается именно этот текст.
+          # Проверка после подстановки: sed без совпадений ошибкой не считается
+          sed -i "s|<b data-version>[^<]*</b>|<b data-version>$VERSION</b>|" .public-sync/site/index.html
+          sed -i "s|<span data-version>[^<]*</span>|<span data-version>$VERSION</span>|" .public-sync/site/download.html
+          grep -q "<b data-version>$VERSION</b>" .public-sync/site/index.html || { echo "index.html: версия не проставлена" >&2; exit 1; }
+          grep -q "<span data-version>$VERSION</span>" .public-sync/site/download.html || { echo "download.html: версия не проставлена" >&2; exit 1; }
           cargo metadata --format-version 1 --no-deps > /dev/null
           python3 <<'PY'
           import datetime
@@ -134,7 +171,7 @@ jobs:
           PY
           git config user.name  'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add CHANGELOG.md package.json package-lock.json Cargo.lock src-tauri/tauri.conf.json src-tauri/Cargo.toml
+          git add CHANGELOG.md package.json package-lock.json Cargo.lock src-tauri/tauri.conf.json src-tauri/Cargo.toml .public-sync/site/index.html .public-sync/site/download.html
           git diff --staged --quiet || git commit -m "chore: release v$VERSION [skip ci]"
           git tag "v$VERSION" || echo "Tag v$VERSION already exists"
           git push --follow-tags origin HEAD:main || git push origin HEAD:main
@@ -146,11 +183,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { platform: ubuntu-22.04,     args: "",                              job_name: linux-amd64 }
-          - { platform: ubuntu-22.04-arm, args: "",                              job_name: linux-arm64 }
-          - { platform: macos-latest,     args: "--target aarch64-apple-darwin", job_name: macos-arm64 }
-          - { platform: macos-latest,     args: "--target x86_64-apple-darwin",  job_name: macos-amd64 }
-          - { platform: windows-latest,   args: "",                              job_name: windows-amd64 }
+          - { platform: ubuntu-22.04,     args: "",                              job_name: linux-amd64,   enabled: "${{ inputs.build_linux_amd64 }}" }
+          - { platform: ubuntu-22.04-arm, args: "",                              job_name: linux-arm64,   enabled: "${{ inputs.build_linux_arm64 }}" }
+          - { platform: macos-latest,     args: "--target aarch64-apple-darwin", job_name: macos-arm64,   enabled: "${{ inputs.build_macos_arm64 }}" }
+          - { platform: macos-latest,     args: "--target x86_64-apple-darwin",  job_name: macos-amd64,   enabled: "${{ inputs.build_macos_amd64 }}" }
+          - { platform: windows-latest,   args: "",                              job_name: windows-amd64, enabled: "${{ inputs.build_windows_amd64 }}" }
+    # Невыбранные платформы пропускаются; enabled приходит как строка или как bool
+    if: ${{ matrix.enabled == 'true' || matrix.enabled == true }}
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -202,6 +241,15 @@ jobs:
           echo "CXX_x86_64_apple_darwin=clang++ -arch x86_64"  >> $GITHUB_ENV
           echo "CARGO_TARGET_X86_64_APPLE_DARWIN_LINKER=clang" >> $GITHUB_ENV
           echo "MACOSX_DEPLOYMENT_TARGET=10.13"                >> $GITHUB_ENV
+
+      - name: 🔄 Set version in working copy (без коммита)
+        run: |
+          VERSION="${{ needs.version.outputs.version }}"
+          export VERSION
+          npm version "$VERSION" --no-git-tag-version --allow-same-version
+          sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" src-tauri/tauri.conf.json
+          sed -i "s/^version = \".*\"/version = \"$VERSION\"/" src-tauri/Cargo.toml
+          grep -q "\"version\": \"$VERSION\"" src-tauri/tauri.conf.json || { echo "tauri.conf.json: версия не проставлена" >&2; exit 1; }
 
       - name: 📦 Install frontend dependencies
         run: npm ci
@@ -305,6 +353,11 @@ jobs:
       - name: 📝 Build release body
         shell: bash
         run: |
+          # Pre-release без описания: тело пустое, блок mux-release-notes не нужен
+          if [ "${{ needs.version.outputs.is_prerelease }}" = "true" ]; then
+            : > release_body.md
+            exit 0
+          fi
           VERSION="${{ needs.version.outputs.version }}"
           TAG="v${VERSION}"
           REPO="${{ github.repository }}"
@@ -378,6 +431,8 @@ jobs:
   updater-manifest:
     name: 📡 Generate latest.json
     needs: [version, build]
+    # latest.json нужен только обычному релизу: автообновление читает последний релиз
+    if: needs.version.outputs.is_prerelease != 'true'
     runs-on: ubuntu-latest
     steps:
       - name: 🔄 Build & upload latest.json
@@ -438,6 +493,8 @@ jobs:
   site-update:
     name: 🌐 Update site releases.json
     needs: [version, build]
+    # Pre-release не должен менять ссылки сайта на тестовую сборку
+    if: needs.version.outputs.is_prerelease != 'true'
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout
