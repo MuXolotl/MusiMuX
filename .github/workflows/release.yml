@@ -131,13 +131,13 @@ jobs:
           export VERSION
           echo "Version: $VERSION"
           npm version "$VERSION" --no-git-tag-version --allow-same-version
-          sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" src-tauri/tauri.conf.json
-          sed -i "s/^version = \".*\"/version = \"$VERSION\"/" src-tauri/Cargo.toml
+          sed -i.bak "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" src-tauri/tauri.conf.json && rm -f src-tauri/tauri.conf.json.bak
+          sed -i.bak "s/^version = \".*\"/version = \"$VERSION\"/" src-tauri/Cargo.toml && rm -f src-tauri/Cargo.toml.bak
           # Запасная версия в разметке зеркала сайта: при загрузке страницы её
           # подменяет releases.json, но без сети читается именно этот текст.
           # Проверка после подстановки: sed без совпадений ошибкой не считается
-          sed -i "s|<b data-version>[^<]*</b>|<b data-version>$VERSION</b>|" .public-sync/site/index.html
-          sed -i "s|<span data-version>[^<]*</span>|<span data-version>$VERSION</span>|" .public-sync/site/download.html
+          sed -i.bak "s|<b data-version>[^<]*</b>|<b data-version>$VERSION</b>|" .public-sync/site/index.html && rm -f .public-sync/site/index.html.bak
+          sed -i.bak "s|<span data-version>[^<]*</span>|<span data-version>$VERSION</span>|" .public-sync/site/download.html && rm -f .public-sync/site/download.html.bak
           grep -q "<b data-version>$VERSION</b>" .public-sync/site/index.html || { echo "index.html: версия не проставлена" >&2; exit 1; }
           grep -q "<span data-version>$VERSION</span>" .public-sync/site/download.html || { echo "download.html: версия не проставлена" >&2; exit 1; }
           cargo metadata --format-version 1 --no-deps > /dev/null
@@ -284,8 +284,8 @@ jobs:
           VERSION="${{ needs.version.outputs.version }}"
           export VERSION
           npm version "$VERSION" --no-git-tag-version --allow-same-version
-          sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" src-tauri/tauri.conf.json
-          sed -i "s/^version = \".*\"/version = \"$VERSION\"/" src-tauri/Cargo.toml
+          sed -i.bak "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" src-tauri/tauri.conf.json && rm -f src-tauri/tauri.conf.json.bak
+          sed -i.bak "s/^version = \".*\"/version = \"$VERSION\"/" src-tauri/Cargo.toml && rm -f src-tauri/Cargo.toml.bak
           grep -q "\"version\": \"$VERSION\"" src-tauri/tauri.conf.json || { echo "tauri.conf.json: версия не проставлена" >&2; exit 1; }
           # MSI (WiX) принимает только числовую версию: 0.13.0-beta.1 -> 0.13.0.1.
           # Версия приложения остаётся прежней; сопоставление нужно только для MSI.
