@@ -1,6 +1,6 @@
 /* Сайт MusiMuX: ссылки на сборки из releases.json (его обновляет CI при
    релизе), выбор ОС на странице скачивания, меню на узких экранах и
-   предпоказ экранов приложения. */
+   переключение скриншотов приложения. */
 
 /* releases.json лежит рядом со страницей; при открытии с диска или без
    сети кнопки остаются ссылками на страницу релизов */
@@ -50,48 +50,21 @@ function initNav() {
   });
 }
 
-/* На узких экранах показываем фрагмент макета в читаемом масштабе.
-   У полноэкранного плеера нет сайдбара, поэтому сдвиг ему не нужен. */
-function initMock() {
-  const frame = document.querySelector(".shot-frame");
+/* Переключение скриншотов: кнопка сцены показывает свой снимок и подпись.
+   Без JS остаётся первый экран, а кнопки скрыты атрибутом hidden */
+function initShots() {
   const controls = document.querySelector(".shot-scenes");
-  const mock = frame?.querySelector(".mock");
-  if (!frame || !controls || !mock) return;
-
-  const fit = () => {
-    const compact = window.matchMedia("(max-width: 720px)").matches;
-    const scale = compact
-      ? Math.min(0.78, frame.clientWidth / 520)
-      : Math.min(1, frame.clientWidth / 1080);
-    frame.style.setProperty("--mock-scale", scale.toFixed(4));
-    frame.style.setProperty("--mock-x", compact && mock.dataset.scene !== "nowplaying" ? `${Math.min(0, 35 - 220 * scale)}px` : "0px");
-  };
-  new ResizeObserver(fit).observe(frame);
-  fit();
-
-  const titles = {
-    library: ["Моя музыка", "1 284 трека"],
-    explore: ["Обзор", "Подборки и новинки"],
-    nowplaying: ["Сейчас играет", ""],
-  };
-  const buttons = controls.querySelectorAll("[data-mock-scene]");
-  const panels = mock.querySelectorAll("[data-mock-panel]");
-  const captions = document.querySelectorAll("[data-mock-caption]");
-  const navItems = mock.querySelectorAll("[data-mock-nav]");
-  const title = mock.querySelector("[data-mock-title]");
-  const subtitle = mock.querySelector("[data-mock-subtitle]");
+  const frame = document.querySelector(".shot-frame");
+  if (!controls || !frame) return;
+  const buttons = controls.querySelectorAll("[data-shot]");
+  const panels = frame.querySelectorAll("[data-shot-panel]");
+  const captions = document.querySelectorAll("[data-shot-caption]");
 
   buttons.forEach((button) => button.addEventListener("click", () => {
-    const scene = button.dataset.mockScene;
-    if (!titles[scene]) return;
-    mock.dataset.scene = scene;
-    fit();
-    title.textContent = titles[scene][0];
-    subtitle.textContent = titles[scene][1];
+    const scene = button.dataset.shot;
     buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
-    panels.forEach((panel) => (panel.hidden = panel.dataset.mockPanel !== scene));
-    captions.forEach((caption) => (caption.hidden = caption.dataset.mockCaption !== scene));
-    navItems.forEach((item) => item.classList.toggle("active", item.dataset.mockNav === (scene === "explore" ? "explore" : "library")));
+    panels.forEach((panel) => (panel.hidden = panel.dataset.shotPanel !== scene));
+    captions.forEach((caption) => (caption.hidden = caption.dataset.shotCaption !== scene));
   }));
   controls.hidden = false;
 }
@@ -99,6 +72,6 @@ function initMock() {
 document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initOsTabs();
-  initMock();
+  initShots();
   loadReleases();
 });

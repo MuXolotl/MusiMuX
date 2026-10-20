@@ -11,6 +11,7 @@
   <meta property="og:url" content="https://muxolotl.github.io/MusiMuX/download.html">
   <meta property="og:title" content="Скачать MusiMuX">
   <meta property="og:description" content="Сборки MusiMuX для Windows, macOS и Linux. Бесплатно, без рекламы и подписок.">
+  <meta property="og:image" content="https://muxolotl.github.io/MusiMuX/images/og.jpg">
   <link rel="icon" type="image/png" href="images/icon.png">
   <link rel="apple-touch-icon" href="images/icon.png">
   <link rel="stylesheet" href="css/styles.css">
@@ -46,7 +47,7 @@
   <div class="wrap">
     <span class="eyebrow">Скачать</span>
     <h1>MusiMuX <span data-version>0.12.0</span></h1>
-    <p>Бесплатно, без рекламы и подписок. Выберите систему — ссылки ведут на файлы последнего релиза.</p>
+    <p>Выберите свою систему — ссылки ведут на файлы последнего релиза на GitHub. Бесплатно и без рекламы.</p>
   </div>
 </section>
 <section class="narrow" style="padding-bottom:88px">
@@ -81,6 +82,12 @@
           <span><b>Intel .dmg</b><span>Mac с процессором Intel</span></span>
         </a>
     </div>
+    <div class="install">
+      <p>Установка обычная: откройте .dmg двойным кликом и перетащите MusiMuX в папку «Программы». Но сборка не подписана, поэтому первый запуск macOS заблокирует. Попробуйте открыть приложение, а затем разрешите его в настройках: «Конфиденциальность и безопасность» → «Открыть всё равно». В macOS до 15-й версии работает и правый клик по приложению → «Открыть».</p>
+      <p>Или вообще без блокировки: снимите карантин со скачанного файла в Терминале ещё до его открытия:</p>
+      <pre><code>xattr -dr com.apple.quarantine ~/Downloads/MusiMuX-<span data-version>0.12.0</span>-macos-arm64.dmg</code></pre>
+      <p>Для Mac с процессором Intel в имени файла вместо <code>arm64</code> — <code>intel</code>.</p>
+    </div>
     <div class="panel-foot"><span>macOS 10.15 и новее</span><a href="https://github.com/MuXolotl/MusiMuX/releases" target="_blank" rel="noopener noreferrer">Все релизы →</a></div>
   </div>
 
@@ -105,18 +112,26 @@
           <span><b>AppImage</b><span>ARM64, без установки</span></span>
         </a>
     </div>
+    <div class="install">
+      <p>Пакет .deb правильно ставить через apt из папки со скачанным файлом — зависимости подтянутся сами:</p>
+      <pre><code>sudo apt install ./MusiMuX-<span data-version>0.12.0</span>-linux-x64.deb</code></pre>
+      <p>AppImage установка не нужна: разрешите файлу исполнение и запускайте.</p>
+      <pre><code>chmod +x MusiMuX-<span data-version>0.12.0</span>-linux-x64.AppImage
+./MusiMuX-<span data-version>0.12.0</span>-linux-x64.AppImage</code></pre>
+      <p>Для ARM64 в именах файлов вместо <code>x64</code> — <code>arm64</code>. Если AppImage не запускается на свежем Ubuntu, ему не хватает библиотеки FUSE 2: <code>sudo apt install libfuse2</code>.</p>
+    </div>
     <div class="panel-foot"><span>Linux x64 и ARM64</span><a href="https://github.com/MuXolotl/MusiMuX/releases" target="_blank" rel="noopener noreferrer">Все релизы →</a></div>
   </div>
 
   <div class="notice">
     <svg width="18" height="18"><use href="#i-alert"/></svg>
-    <p><b>Сборки не подписаны сертификатом.</b> При первом запуске Windows SmartScreen или macOS Gatekeeper попросят подтвердить запуск — это ожидаемо. На macOS: правый клик по приложению → «Открыть».</p>
+    <p><b>Сборки не подписаны сертификатом.</b> При первом запуске Windows SmartScreen или macOS Gatekeeper попросят подтвердить запуск — это ожидаемо. Как пройти проверку на macOS и как ставить пакеты на Linux — на вкладках этих систем выше.</p>
   </div>
 
   <div class="steps">
-    <div class="step"><div class="n">01</div><h3>Установите</h3><p>Запустите установщик или откройте AppImage — дополнительные компоненты не нужны.</p></div>
-    <div class="step"><div class="n">02</div><h3>Войдите</h3><p>Логин и пароль с подтверждением 2FA (SMS, push, звонок, почта, аутентификатор) или готовый токен.</p></div>
-    <div class="step"><div class="n">03</div><h3>Обновляйтесь</h3><p>Приложение само проверяет новые версии. Режим — уведомлять, ставить автоматически или вручную — в настройках.</p></div>
+    <div class="step"><div class="n">01</div><h3>Установите</h3><p>Скачайте сборку для своей системы выше и установите её. Для Linux и macOS в карточках систем лежат готовые команды.</p></div>
+    <div class="step"><div class="n">02</div><h3>Войдите</h3><p>Логин, пароль и код подтверждения — способ выберет сам VK: SMS, push, звонок, почта или приложение-аутентификатор. Если вход не проходит, попробуйте выключить VPN.</p></div>
+    <div class="step"><div class="n">03</div><h3>Обновляйтесь</h3><p>О новых версиях приложение сообщит само. Можно и наоборот: проверять вручную или не проверять вовсе — это настраивается.</p></div>
   </div>
 </section>
 </main>

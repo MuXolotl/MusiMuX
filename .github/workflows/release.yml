@@ -479,11 +479,34 @@ jobs:
 
           ⚠️ Приложение пока без цифровой подписи — при первом запуске подтвердите запуск вручную (SmartScreen на Windows, Gatekeeper на macOS).
 
+          ### Установка на Linux
+
+          Пакет .deb ставится через apt из папки со скачанным файлом — зависимости подтянутся сами:
+
+          \`\`\`bash
+          sudo apt install ./MusiMuX-${VERSION}-linux-x64.deb
+          \`\`\`
+
           AppImage нужно сделать исполняемым перед запуском:
 
           \`\`\`bash
-          chmod +x MusiMuX-\${VERSION}-linux-x64.AppImage
+          chmod +x MusiMuX-${VERSION}-linux-x64.AppImage
+          ./MusiMuX-${VERSION}-linux-x64.AppImage
           \`\`\`
+
+          Для ARM64 в именах файлов вместо \`x64\` — \`arm64\`. Если AppImage не запускается на свежем Ubuntu, ему не хватает библиотеки FUSE 2: \`sudo apt install libfuse2\`.
+
+          ### Первый запуск на macOS
+
+          Откройте .dmg и перетащите MusiMuX в папку «Программы». Сборка не подписана, поэтому первый запуск macOS заблокирует: попробуйте открыть приложение, а затем разрешите его в «Настройки» → «Конфиденциальность и безопасность» → «Открыть всё равно». В macOS до 15-й версии работает и правый клик по приложению → «Открыть».
+
+          Или вообще без блокировки: снимите карантин со скачанного файла в Терминале ещё до его открытия:
+
+          \`\`\`bash
+          xattr -dr com.apple.quarantine ~/Downloads/MusiMuX-${VERSION}-macos-arm64.dmg
+          \`\`\`
+
+          Для Mac с процессором Intel в имени файла вместо \`arm64\` — \`intel\`.
           EOF
 
       - name: 📤 Upload to release
