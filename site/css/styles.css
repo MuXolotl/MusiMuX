@@ -225,6 +225,10 @@ svg { display: block; flex-shrink: 0; }
 
 /* ---------- Карточки возможностей ---------- */
 .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+/* Неполный последний ряд: одна плитка из трёх оставляла бы дырку справа,
+   поэтому последняя карточка занимает всю ширину и читается лентой */
+.features > .feature:last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
+.features > .feature:last-child:nth-child(3n + 1) p { max-width: 78ch; }
 .feature {
   padding: 22px; border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--bg-surface);
