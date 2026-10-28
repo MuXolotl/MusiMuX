@@ -19,6 +19,7 @@
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="i-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
 <symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></symbol>
 <symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
 <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
@@ -77,31 +78,31 @@
   <div class="wrap">
     <div class="shot-head">
       <h2>Как выглядит MusiMuX</h2>
-      <p>Это настоящие скриншоты приложения на Windows.</p>
+      <p>Это настоящие скриншоты приложения на Windows. Переключайте экраны — от поиска и «Моей музыки» до страницы артиста и текста песни.</p>
     </div>
     <div class="shot-scenes" role="group" aria-label="Выбор экрана" hidden>
       <button type="button" data-shot="home" aria-pressed="true">Главная</button>
       <button type="button" data-shot="explore" aria-pressed="false">Обзор</button>
       <button type="button" data-shot="search" aria-pressed="false">Поиск</button>
+      <button type="button" data-shot="subscriptions" aria-pressed="false">Подписки</button>
+      <button type="button" data-shot="artist" aria-pressed="false">Артист</button>
       <button type="button" data-shot="nowplaying" aria-pressed="false">Сейчас играет</button>
-      <button type="button" data-shot="sound" aria-pressed="false">Звук</button>
-      <button type="button" data-shot="account" aria-pressed="false">Аккаунты</button>
     </div>
     <div class="shot-frame">
-      <img data-shot-panel="home" src="images/screens/home.webp" width="1600" height="863" alt="Главная страница MusiMuX: кнопка «Слушать микс», подборки «Собрано алгоритмами» и жанры, внизу — панель плеера">
-      <img data-shot-panel="explore" src="images/screens/explore.webp" width="1600" height="858" loading="lazy" alt="Раздел «Обзор»: баннеры, треки блока «Сегодня в плеере» и подборки «Выбор редакции»" hidden>
-      <img data-shot-panel="search" src="images/screens/search.webp" width="1600" height="859" loading="lazy" alt="Поиск по запросу «Plenka»: свои треки, все треки каталога и альбомы исполнителя" hidden>
-      <img data-shot-panel="nowplaying" src="images/screens/nowplaying.webp" width="1600" height="865" loading="lazy" alt="Экран «Сейчас играет»: крупная обложка трека «На луне» и синхронизированный текст песни справа" hidden>
-      <img data-shot-panel="sound" src="images/screens/sound.webp" width="1600" height="860" loading="lazy" alt="Настройки звука: десятиполосный эквалайзер с пресетом «Басы» и настройки кроссфейда" hidden>
-      <img data-shot-panel="account" src="images/screens/account.webp" width="1600" height="862" loading="lazy" alt="Настройки аккаунта: список подключённых аккаунтов и переключатель истории прослушивания; имена и ID скрыты" hidden>
+      <img data-shot-panel="home" src="images/screens/home.webp" width="1600" height="1051" alt="Главная страница MusiMuX: кнопка «Слушать микс», подборки «Собрано алгоритмами» и жанры, вверху — поиск с областью «Вся музыка» или «Моя музыка»">
+      <img data-shot-panel="explore" src="images/screens/explore.webp" width="1600" height="1051" loading="lazy" alt="Раздел «Обзор»: баннеры, треки блока «Сегодня в плеере» и подборки «Выбор редакции»" hidden>
+      <img data-shot-panel="search" src="images/screens/search.webp" width="1600" height="1051" loading="lazy" alt="Выдача поиска по запросу «plenka»: свои треки, все треки каталога и альбомы исполнителя, вверху — поле поиска с областью «Вся музыка» или «Моя музыка»" hidden>
+      <img data-shot-panel="subscriptions" src="images/screens/subscriptions.webp" width="1600" height="1051" loading="lazy" alt="Вкладка «Подписки»: музыканты и кураторы, на которых подписан аккаунт" hidden>
+      <img data-shot-panel="artist" src="images/screens/artist.webp" width="1600" height="1051" loading="lazy" alt="Страница артиста: обложка, «Слушать», «Микс по артисту», «Подписаться», популярные треки и релизы" hidden>
+      <img data-shot-panel="nowplaying" src="images/screens/nowplaying.webp" width="1600" height="1051" loading="lazy" alt="Экран «Сейчас играет»: обложка с управлением, прогресс, кнопки текста и синхронизированный текст песни справа с панелью источника" hidden>
     </div>
     <div class="shot-caption" aria-live="polite">
       <p data-shot-caption="home"><b>Главная.</b> Микс под ваш вкус, подборки от алгоритмов и жанры.</p>
       <p data-shot-caption="explore" hidden><b>Обзор.</b> Баннеры, «Сегодня в плеере» и подборки редакции.</p>
-      <p data-shot-caption="search" hidden><b>Поиск.</b> Свои треки и весь каталог, альбомы — с подсказками по мере ввода.</p>
-      <p data-shot-caption="nowplaying" hidden><b>Сейчас играет.</b> Крупная обложка и текст песни, который подсвечивается по ходу трека.</p>
-      <p data-shot-caption="sound" hidden><b>Звук.</b> Эквалайзер на десять полос со своими пресетами и кроссфейд между треками.</p>
-      <p data-shot-caption="account" hidden><b>Аккаунты.</b> Несколько аккаунтов VK в одном приложении. Имена на скриншоте замазаны.</p>
+      <p data-shot-caption="search" hidden><b>Поиск.</b> Поле в шапке видно из любого раздела: «Вся музыка» ищет по всему каталогу, «Моя музыка» — только по добавленным трекам.</p>
+      <p data-shot-caption="subscriptions" hidden><b>Подписки.</b> Музыканты и кураторы, на которых вы подписаны, с переходом на их страницы.</p>
+      <p data-shot-caption="artist" hidden><b>Артист.</b> Популярное, релизы, «Микс по артисту», подписка и ссылка на страницу в VK.</p>
+      <p data-shot-caption="nowplaying" hidden><b>Сейчас играет.</b> Крупная обложка и текст песни: источник можно выбрать, строки подсвечиваются по ходу трека.</p>
     </div>
   </div>
 </section>
@@ -126,17 +127,22 @@
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-search"/></svg></span>
       <h3>Поиск</h3>
-      <p>Ищет треки, исполнителей, альбомы и плейлисты, подсказывает по мере ввода и ведёт локальную историю запросов отдельно для каждого аккаунта — её можно отключить или очистить. У исполнителей — свои страницы с популярными треками, релизами и кнопкой «Микс по артисту».</p>
+      <p>Одно поле в шапке — доступно из любого раздела. Слева выбирается область: «Вся музыка» ищет треки, альбомы, плейлисты, исполнителей и кураторов, «Моя музыка» — только добавленные треки. Подсказки появляются по мере ввода, история запросов хранится локально отдельно для каждого аккаунта — её можно отключить или очистить.</p>
+    </div>
+    <div class="feature">
+      <span class="ic"><svg width="18" height="18"><use href="#i-link"/></svg></span>
+      <h3>Ссылки VK</h3>
+      <p>Ссылка, вставленная в поиск, открывает то, на что она указывает: трек, плейлист, альбом, исполнителя, куратора или раздел. Ссылка на трек открывает окно трека — обложка включает воспроизведение, рядом «В мою музыку», «Микс по треку», «Открыть альбом», «В плейлист» и переход на страницу трека в VK, ниже — похожие треки.</p>
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-file-text"/></svg></span>
       <h3>Текст песни</h3>
-      <p>Если текст синхронизирован, строки подсвечиваются по ходу песни, как в караоке, а клик по строке сразу перематывает трек к нужному куплету. Если таймкодов нет — покажется обычный текст, а весь текст целиком можно скопировать в один клик. Есть экран «Сейчас играет» на всё окно.</p>
+      <p>Текст ищется сразу в десяти источниках: варианты появляются по мере ответа, синхронизированный выбирается сам, а меню у текста показывает, откуда он и какие ещё есть. Строки с таймкодами подсвечиваются по ходу песни и продолжают следовать за ней после ручной прокрутки; клик по строке перематывает трек, текст выравнивается по центру или слева и копируется целиком. Есть экран «Сейчас играет» на всё окно.</p>
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-download"/></svg></span>
       <h3>Скачивание и загрузка</h3>
-      <p>Треки, плейлисты и альбомы скачиваются в MP3 — с названием, исполнителем и обложкой в тегах файла. Свои MP3 до 200 МБ можно наоборот загрузить в «Мою музыку».</p>
+      <p>Треки, плейлисты и альбомы скачиваются в MP3 — с названием, исполнителем и обложкой в тегах файла. Свои MP3 до 200 МБ можно наоборот загрузить в «Мою музыку»: названия и исполнители правятся прямо в очереди до отправки.</p>
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-sliders"/></svg></span>
@@ -174,7 +180,7 @@
       <p>У проекта нет сервера, через который проходили бы ваши запросы и данные. Приложение на вашем компьютере обращается к VK само — от вашего имени и напрямую.</p>
     </div>
     <div class="points">
-      <div class="point"><span class="dot"></span><div><h3>Запросы идут напрямую</h3><p>Вход, каталог и сама музыка — между вашим компьютером и VK. Посередине никого нет, собирать и продавать просто некому и нечего.</p></div></div>
+      <div class="point"><span class="dot"></span><div><h3>Запросы идут напрямую</h3><p>Вход, каталог и сама музыка — между вашим компьютером и VK. Тексты песен, которых нет у VK, приложение ищет в открытых каталогах текстов: туда уходят только исполнитель и название трека — без аккаунта, токена и истории. Посередине никого нет, собирать и продавать просто некому и нечего.</p></div></div>
       <div class="point"><span class="dot"></span><div><h3>Данные лежат у вас</h3><p>Токены аккаунтов, настройки, кеш обложек и скачанные MP3 хранятся на вашем компьютере — и больше нигде.</p></div></div>
       <div class="point"><span class="dot"></span><div><h3>Что сохранять и отправлять — настраивается</h3><p>Трансляция текущего трека в статус по умолчанию выключена, а отправку истории прослушивания в VK и локальную историю поисковых запросов можно отключить в любой момент.</p></div></div>
       <div class="point"><span class="dot"></span><div><h3>Бесплатно и без рекламы</h3><p>Со стороны приложения нет ни тарифов, ни баннеров. MusiMuX не добавляет ограничений сверх тех, что уже есть у вашего аккаунта.</p></div></div>

@@ -229,6 +229,8 @@ svg { display: block; flex-shrink: 0; }
    поэтому последняя карточка занимает всю ширину и читается лентой */
 .features > .feature:last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
 .features > .feature:last-child:nth-child(3n + 1) p { max-width: 78ch; }
+/* Две плитки в последнем ряду: вторая растягивается на оставшиеся колонки */
+.features > .feature:last-child:nth-child(3n + 2) { grid-column: span 2; }
 .feature {
   padding: 22px; border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--bg-surface);
