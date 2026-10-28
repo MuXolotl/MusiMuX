@@ -311,7 +311,7 @@ jobs:
         if: matrix.job_name == 'windows-amd64'
         shell: bash
         run: |
-          curl -L -o ffmpeg-temp.zip https://github.com/Tyrrrz/FFmpegBin/releases/download/8.1.2/ffmpeg-windows-x64.zip
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 5 -o ffmpeg-temp.zip https://github.com/Tyrrrz/FFmpegBin/releases/download/8.1.2/ffmpeg-windows-x64.zip
           unzip -q ffmpeg-temp.zip
           mv ffmpeg.exe src-tauri/binaries/ffmpeg-x86_64-pc-windows-msvc.exe
           rm -f ffmpeg-temp.zip
@@ -320,7 +320,7 @@ jobs:
         if: matrix.job_name == 'linux-amd64'
         shell: bash
         run: |
-          curl -L -o ffmpeg-temp.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-lgpl.tar.xz
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 5 -o ffmpeg-temp.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-lgpl.tar.xz
           tar -xJf ffmpeg-temp.tar.xz
           FFMPEG_BIN=ffmpeg-master-latest-linux64-lgpl/bin/ffmpeg
           mv "$FFMPEG_BIN" src-tauri/binaries/ffmpeg-x86_64-unknown-linux-gnu
@@ -331,7 +331,7 @@ jobs:
         if: matrix.job_name == 'linux-arm64'
         shell: bash
         run: |
-          curl -L -o ffmpeg-temp.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linuxarm64-lgpl.tar.xz
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 5 -o ffmpeg-temp.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linuxarm64-lgpl.tar.xz
           tar -xJf ffmpeg-temp.tar.xz
           FFMPEG_BIN=ffmpeg-master-latest-linuxarm64-lgpl/bin/ffmpeg
           mv "$FFMPEG_BIN" src-tauri/binaries/ffmpeg-aarch64-unknown-linux-gnu
@@ -342,7 +342,7 @@ jobs:
         if: matrix.job_name == 'macos-amd64'
         shell: bash
         run: |
-          curl -L -o ffmpeg-temp.zip https://github.com/Tyrrrz/FFmpegBin/releases/download/8.1.2/ffmpeg-osx-x64.zip
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 5 -o ffmpeg-temp.zip https://github.com/Tyrrrz/FFmpegBin/releases/download/8.1.2/ffmpeg-osx-x64.zip
           unzip -q ffmpeg-temp.zip
           mv ffmpeg src-tauri/binaries/ffmpeg-x86_64-apple-darwin
           chmod +x src-tauri/binaries/ffmpeg-x86_64-apple-darwin
@@ -352,7 +352,7 @@ jobs:
         if: matrix.job_name == 'macos-arm64'
         shell: bash
         run: |
-          curl -L -o ffmpeg-temp.zip https://github.com/Tyrrrz/FFmpegBin/releases/download/8.1.2/ffmpeg-osx-arm64.zip
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 5 -o ffmpeg-temp.zip https://github.com/Tyrrrz/FFmpegBin/releases/download/8.1.2/ffmpeg-osx-arm64.zip
           unzip -q ffmpeg-temp.zip
           mv ffmpeg src-tauri/binaries/ffmpeg-aarch64-apple-darwin
           chmod +x src-tauri/binaries/ffmpeg-aarch64-apple-darwin
