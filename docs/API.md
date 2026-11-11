@@ -136,7 +136,7 @@ curl -X POST "https://api.vk.ru/method/catalog.getAudio" \
 
 | Метод | Ключи в текущих манифестах | Формирование в Rust-клиенте |
 |---|---|---|
-| `catalog.getAudio` | `extended`, `owner_id`, `url` | `extended=1`; `url` опционален. `owner_id` есть в захватах, но не передаётся этим методом MusiMuX |
+| `catalog.getAudio` | `extended`, `owner_id`, `url` | `extended=1`; `url` опционален. для страницы владельца сначала используется URL, затем `owner_id` как запасной вариант |
 | `catalog.getSection` | `extended`, `need_blocks`, `section_id`, `start_from` | Всегда `extended=1`, `need_blocks=1`; курсор только при продолжении |
 | `catalog.getBlockItems` | `block_id`, `start_from` | `extended=1` формируется кодом, но в текущих манифестах не записан |
 | `catalog.getAudioArtist` | `artist_id` | Код добавляет `extended=1` |
@@ -277,7 +277,7 @@ VK добавляет типы блоков, раскладки и поля бе
 |---|---|---|---|
 | `extended` | int | нет | В Rust-клиенте MusiMuX отправляется как `1` |
 | `url` | string | нет | Прямая ссылка на раздел; без неё вызов возвращает корневой каталог |
-| `owner_id` | int | нет | Наблюдался в отдельных захватах; текущий метод Rust-клиента его не добавляет |
+| `owner_id` | int | нет | В запасном запросе музыкальной страницы владельца: положительный ID пользователя или отрицательный ID сообщества |
 
 Без `url` обычный вызов без владельца возвращал каталог из шести указателей
 `catalog.sections`; запрос с `owner_id` в снимках мог вернуть один указатель.
@@ -557,6 +557,12 @@ generated-плейлистов могут обновляться; ID, ключи
 #### `users.get`
 
 Публичная информация пользователей. `user_ids` (список или `screen_name` через запятую; пусто — текущий), `fields` (`photo_base,photo_100,photo_200,photo_400_orig,photo_max,screen_name,counters,country,city,status,verified`). Ответ: массив `[User]`. В `counters` — счётчики медиатеки (`audios`, `albums`, `clips_followers`, …): ими заполнены карточки «Музыки друзей» и кураторов.
+
+#### `friends.get`, `friends.search` и `utils.resolveScreenName`
+
+Список друзей текущего пользователя: `friends.get(order=name, fields=photo_base,photo_100,photo_200,photo_400_orig,photo_max,can_see_audio, count, offset)`; поиск — `friends.search(q, fields, count, offset)`. Ответ ожидается как `{count, items: [User]}`. Курсор следующей порции вычисляется по числу полученных записей до исключения деактивированных профилей. Доступ к аудио определяется полем `can_see_audio`.
+
+Для коротких адресов `utils.resolveScreenName(screen_name)` возвращает тип и числовой ID; пустой ответ означает, что адрес не разрешён. Пользователь открывается с положительным ID, сообщество — с отрицательным. Неизвестные типы открываются в браузере.
 
 ### 4.6. Статистика (`stats.*`)
 

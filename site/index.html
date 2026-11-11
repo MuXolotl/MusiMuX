@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MusiMuX — музыкальный клиент для Windows, macOS и Linux</title>
-  <meta name="description" content="MusiMuX — плеер VK Музыки для Windows, macOS и Linux: ваша музыка, плейлисты, поиск, тексты песен и скачивание MP3. Своих серверов нет — всё хранится на вашем компьютере.">
+  <meta name="description" content="MusiMuX — плеер VK Музыки для Windows, macOS и Linux: ваша музыка, плейлисты, поиск, тексты песен и скачивание музыки. Своих серверов нет — настройки и скачанные файлы хранятся на вашем компьютере.">
   <meta name="author" content="MuXolotl">
   <meta name="theme-color" content="#09090b">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://muxolotl.github.io/MusiMuX/">
   <meta property="og:title" content="MusiMuX — музыкальный клиент для Windows, macOS и Linux">
-  <meta property="og:description" content="MusiMuX — плеер VK Музыки для Windows, macOS и Linux: ваша музыка, плейлисты, поиск, тексты песен и скачивание MP3. Своих серверов нет — всё хранится на вашем компьютере.">
+  <meta property="og:description" content="MusiMuX — плеер VK Музыки для Windows, macOS и Linux: ваша музыка, плейлисты, поиск, тексты песен и скачивание музыки. Своих серверов нет — настройки и скачанные файлы хранятся на вашем компьютере.">
   <meta property="og:image" content="https://muxolotl.github.io/MusiMuX/images/og.jpg">
   <link rel="icon" type="image/png" href="images/icon.png">
   <link rel="apple-touch-icon" href="images/icon.png">
@@ -58,9 +58,9 @@
 <section class="hero">
   <div class="wrap">
     <img class="hero-icon" src="images/icon.png" alt="" width="88" height="88">
-    <span class="version-pill"><i></i>Актуальная версия <b data-version>0.14.0</b></span>
+    <span class="version-pill"><i></i>Актуальная версия <b data-version>0.15.0</b></span>
     <h1>Слушайте свою музыку <em>в отдельном окне</em></h1>
-    <p class="lead">MusiMuX — плеер VK Музыки для Windows, macOS и Linux. Ваши треки, плейлисты и подборки — не во вкладке браузера, а в обычном окне: с медиа-клавишами, треем, текстами песен и скачиванием в MP3.</p>
+    <p class="lead">MusiMuX — плеер VK Музыки для Windows, macOS и Linux. Ваши треки, плейлисты и подборки — не во вкладке браузера, а в обычном окне: с медиа-клавишами, треем, текстами песен и скачиванием музыки.</p>
     <div class="hero-actions">
       <a class="btn primary lg" href="download.html"><svg width="18" height="18"><use href="#i-download"/></svg>Скачать MusiMuX</a>
       <a class="btn lg" href="about.html">О проекте</a>
@@ -78,12 +78,12 @@
   <div class="wrap">
     <div class="shot-head">
       <h2>Как выглядит MusiMuX</h2>
+      <p>Это настоящие скриншоты приложения на Windows. Переключайте экраны — от поиска и «Обзора» до страницы артиста и текста песни.</p>
     </div>
     <div class="shot-scenes" role="group" aria-label="Выбор экрана" hidden>
       <button type="button" data-shot="home" aria-pressed="true">Главная</button>
       <button type="button" data-shot="explore" aria-pressed="false">Обзор</button>
       <button type="button" data-shot="search" aria-pressed="false">Поиск</button>
-      <button type="button" data-shot="subscriptions" aria-pressed="false">Подписки</button>
       <button type="button" data-shot="artist" aria-pressed="false">Артист</button>
       <button type="button" data-shot="nowplaying" aria-pressed="false">Сейчас играет</button>
     </div>
@@ -91,7 +91,6 @@
       <img data-shot-panel="home" src="images/screens/home.webp" width="1600" height="1051" alt="Главная страница MusiMuX: кнопка «Слушать микс», подборки «Собрано алгоритмами» и жанры, вверху — поиск с областью «Вся музыка» или «Моя музыка»">
       <img data-shot-panel="explore" src="images/screens/explore.webp" width="1600" height="1051" loading="lazy" alt="Раздел «Обзор»: баннеры, треки блока «Сегодня в плеере» и подборки «Выбор редакции»" hidden>
       <img data-shot-panel="search" src="images/screens/search.webp" width="1600" height="1051" loading="lazy" alt="Выдача поиска по запросу «plenka»: свои треки, все треки каталога и альбомы исполнителя, вверху — поле поиска с областью «Вся музыка» или «Моя музыка»" hidden>
-      <img data-shot-panel="subscriptions" src="images/screens/subscriptions.webp" width="1600" height="1051" loading="lazy" alt="Вкладка «Подписки»: музыканты и кураторы, на которых подписан аккаунт" hidden>
       <img data-shot-panel="artist" src="images/screens/artist.webp" width="1600" height="1051" loading="lazy" alt="Страница артиста: обложка, «Слушать», «Микс по артисту», «Подписаться», популярные треки и релизы" hidden>
       <img data-shot-panel="nowplaying" src="images/screens/nowplaying.webp" width="1600" height="1051" loading="lazy" alt="Экран «Сейчас играет»: обложка с управлением, прогресс, кнопки текста и синхронизированный текст песни справа с панелью источника" hidden>
     </div>
@@ -99,7 +98,6 @@
       <p data-shot-caption="home"><b>Главная.</b> Микс под ваш вкус, подборки от алгоритмов и жанры.</p>
       <p data-shot-caption="explore" hidden><b>Обзор.</b> Баннеры, «Сегодня в плеере» и подборки редакции.</p>
       <p data-shot-caption="search" hidden><b>Поиск.</b> Поле в шапке видно из любого раздела: «Вся музыка» ищет по всему каталогу, «Моя музыка» — только по добавленным трекам.</p>
-      <p data-shot-caption="subscriptions" hidden><b>Подписки.</b> Музыканты и кураторы, на которых вы подписаны, с переходом на их страницы.</p>
       <p data-shot-caption="artist" hidden><b>Артист.</b> Популярное, релизы, «Микс по артисту», подписка и ссылка на страницу в VK.</p>
       <p data-shot-caption="nowplaying" hidden><b>Сейчас играет.</b> Крупная обложка и текст песни: источник можно выбрать, строки подсвечиваются по ходу трека.</p>
     </div>
@@ -116,7 +114,7 @@
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-music"/></svg></span>
       <h3>Моя музыка и плейлисты</h3>
-      <p>Треки и плейлисты с обложками и фильтром «Все», «Мои», «Добавленные». Рядом — вкладки «Недавнее» (что слушали) и «Подписки» (исполнители и кураторы, на которых вы подписаны).</p>
+      <p>Треки и плейлисты с обложками и фильтром «Все», «Мои», «Добавленные». Рядом — вкладки «Недавнее», «Друзья» и «Подписки».</p>
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-compass"/></svg></span>
@@ -131,7 +129,7 @@
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-link"/></svg></span>
       <h3>Ссылки VK</h3>
-      <p>Ссылка, вставленная в поиск, открывает то, на что она указывает: трек, плейлист, альбом, исполнителя, куратора или раздел. Ссылка на трек открывает окно трека — обложка включает воспроизведение, рядом «В мою музыку», «Микс по треку», «Открыть альбом», «В плейлист» и переход на страницу трека в VK, ниже — похожие треки.</p>
+      <p>Ссылка, вставленная в поиск, открывает то, на что она указывает: трек, плейлист, альбом, исполнителя, куратора, профиль, сообщество или раздел. Ссылка на трек открывает окно трека — обложка включает воспроизведение, рядом «В мою музыку», «Микс по треку», «Открыть альбом», «В плейлист» и переход на страницу трека в VK, ниже — похожие треки.</p>
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-file-text"/></svg></span>
@@ -141,12 +139,12 @@
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-download"/></svg></span>
       <h3>Скачивание и загрузка</h3>
-      <p>Треки, плейлисты и альбомы скачиваются в MP3 — с названием, исполнителем и обложкой в тегах файла. Свои MP3 до 200 МБ можно наоборот загрузить в «Мою музыку»: названия и исполнители правятся прямо в очереди до отправки.</p>
+      <p>Треки скачиваются в MP3, а также AAC и FLAC при их доступности у VK; плейлисты и альбомы — в MP3 или лучшем доступном формате. Скачанное запоминается между запусками и повторно не скачивается; папки загрузок и плейлиста открываются кнопкой «Открыть папку». Свои MP3 до 200 МБ можно наоборот загрузить в «Мою музыку»: названия и исполнители правятся прямо в очереди до отправки.</p>
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-sliders"/></svg></span>
       <h3>Звук</h3>
-      <p>Эквалайзер на десять полос: встроенные и свои пресеты, импорт и экспорт в файл. И кроссфейд — следующий трек плавно перекрывает предыдущий.</p>
+      <p>Эквалайзер на десять полос: встроенные и свои пресеты, импорт и экспорт в файл. Предусиление, скорость с опцией сохранения высоты тона, реверберация и кроссфейд между треками. Скорость, реверберация и предусилитель доступны в панели быстрых настроек прямо в плеере и на экране «Сейчас играет».</p>
     </div>
     <div class="feature">
       <span class="ic"><svg width="18" height="18"><use href="#i-monitor"/></svg></span>
@@ -179,8 +177,8 @@
       <p>У проекта нет сервера, через который проходили бы ваши запросы и данные. Приложение на вашем компьютере обращается к VK само — от вашего имени и напрямую.</p>
     </div>
     <div class="points">
-      <div class="point"><span class="dot"></span><div><h3>Запросы идут напрямую</h3><p>Вход, каталог и сама музыка — между вашим компьютером и VK. Тексты песен, которых нет у VK, приложение ищет в открытых каталогах текстов: туда уходят только исполнитель и название трека — без аккаунта, токена и истории. Посередине никого нет, собирать и продавать просто некому и нечего.</p></div></div>
-      <div class="point"><span class="dot"></span><div><h3>Данные лежат у вас</h3><p>Токены аккаунтов, настройки, кеш обложек и скачанные MP3 хранятся на вашем компьютере — и больше нигде.</p></div></div>
+      <div class="point"><span class="dot"></span><div><h3>Запросы идут напрямую</h3><p>Вход, каталог и сама музыка — между вашим компьютером и VK. При поиске текста приложение параллельно обращается к VK и открытым каталогам текстов, передавая внешним каталогам исполнителя и название трека. Проверка обновлений обращается к GitHub.</p></div></div>
+      <div class="point"><span class="dot"></span><div><h3>Данные лежат у вас</h3><p>Токены аккаунтов, настройки, кеш обложек и скачанные файлы приложения хранятся на вашем компьютере.</p></div></div>
       <div class="point"><span class="dot"></span><div><h3>Что сохранять и отправлять — настраивается</h3><p>Трансляция текущего трека в статус по умолчанию выключена, а отправку истории прослушивания в VK и локальную историю поисковых запросов можно отключить в любой момент.</p></div></div>
       <div class="point"><span class="dot"></span><div><h3>Бесплатно и без рекламы</h3><p>Со стороны приложения нет ни тарифов, ни баннеров. MusiMuX не добавляет ограничений сверх тех, что уже есть у вашего аккаунта.</p></div></div>
     </div>
@@ -239,7 +237,7 @@
       </details>
       <details>
         <summary>Можно слушать без интернета?</summary>
-        <p>Нет, для входа и музыки нужен доступ к VK — офлайн-плеером для локальных файлов MusiMuX не является. А вот скачанные через него MP3 — обычные файлы на вашем диске, их можно слушать чем угодно и без сети.</p>
+        <p>Нет, для входа и музыки нужен доступ к VK — офлайн-плеером для локальных файлов MusiMuX не является. А вот скачанные через него треки — обычные файлы на вашем диске, их можно слушать без сети в плеере, который поддерживает формат файла.</p>
       </details>
       <details>
         <summary>Как приложение обновляется?</summary>
